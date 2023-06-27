@@ -2,7 +2,13 @@ import random
 import datetime
 import os
 
-def main_menu():
+
+
+
+
+# From this point below is the code that will first be executed when running the program
+main_menu_loop = True
+while main_menu_loop == True:
     print("Welcome to Charming Thyme Trattoria. Please type the number that corresponds to the option you would like to select")
 
     # This loop contains exception handling to help ensure that the proper input is entered 
@@ -20,8 +26,19 @@ def main_menu():
             else:
                 loop = False
     
+    if main_menu_input == 1:
+        pass
+        #function
+    elif main_menu_input == 2:
+        pass
+        #function
+    elif main_menu_input == 3:
+        pass
+        #function
+    elif main_menu_input == 4:
+        pass
+        #function
+    elif main_menu_input == 5:
+        main_menu_loop = False
 
-
-
-# From this point below is the code that will first be executed when running the program
-main_menu()
+print("\nThank you for using the program")
