@@ -7,10 +7,12 @@ import os
 
 
 # This function generates a meal recommendation
-def meal_recommendation():
-    menu_list = open(menuItems_Student)
-    print = random.choice()
-    pass
+def meal_recommendation_generator():
+    menu_list = open("menuItems_21100649.txt", "r")
+    menu_contents = menu_list.readlines()
+    recommendation = random.choice(menu_contents)
+    return recommendation
+    
 
 # From this point below is the code that will first be executed when running the program
 main_menu_loop = True
@@ -45,7 +47,12 @@ while main_menu_loop == True:
         pass
         #function
     elif main_menu_input == 5:
-        meal_recommendation()
+        # The while loop will keep the user in this option until they decide to exit and go back to the main menu
+        loop = True
+        while loop == True:
+            print(f"We recommend the {meal_recommendation_generator()}")
+            
+
     elif main_menu_input == 6:
         main_menu_loop = False
 
