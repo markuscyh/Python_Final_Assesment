@@ -12,12 +12,27 @@ def meal_recommendation_generator():
     menu_contents = menu_list.readlines()
     recommendation = random.choice(menu_contents)
     return recommendation
-    
+
+# This function will determine if the user continues with their process or return to the main menu
+def main_menu_exit(question):
+    loop = True
+    while loop == True:
+        answer = input(f"{question}")
+        if answer == "1" or answer == "2":
+            loop = False
+        else:
+            loop = False
+    if answer == "1":
+        loop = True
+        return loop
+    elif answer == "2":
+        loop = False
+        return loop
 
 # From this point below is the code that will first be executed when running the program
 main_menu_loop = True
 while main_menu_loop == True:
-    print("Welcome to Charming Thyme Trattoria. Please type the number that corresponds to the option you would like to select")
+    print("\nWelcome to Charming Thyme Trattoria. Please type the number that corresponds to the option you would like to select")
 
     # This loop contains exception handling to help ensure that the proper input is entered 
     loop = True
@@ -46,12 +61,14 @@ while main_menu_loop == True:
     elif main_menu_input == 4:
         pass
         #function
+        
     elif main_menu_input == 5:
         # The while loop will keep the user in this option until they decide to exit and go back to the main menu
         loop = True
         while loop == True:
-            print(f"We recommend the {meal_recommendation_generator()}")
-            
+            print(f"We recommend {meal_recommendation_generator()}")
+            loop_question = "Would you like a new recommendation or return to the main menu? \n[1] Another recommendation \n[2] Exit \n"
+            loop = main_menu_exit(loop_question)
 
     elif main_menu_input == 6:
         main_menu_loop = False
