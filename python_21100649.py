@@ -21,7 +21,7 @@ def main_menu_exit(question):
         if answer == "1" or answer == "2":
             loop = False
         else:
-            loop = False
+            loop = True
     if answer == "1":
         loop = True
         return loop
