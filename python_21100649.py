@@ -16,7 +16,7 @@ def meal_recommendation_generator():
 # This function will determine if the user continues with their process or return to the main menu
 def main_menu_exit(question):
     loop = True
-    while loop == True:
+    while loop:
         answer = input(f"{question}")
         if answer == "1" or answer == "2":
             loop = False
@@ -36,12 +36,12 @@ reservation_list_contents = reservation_list.readlines()
 reservation_list.close()
 
 main_menu_loop = True
-while main_menu_loop == True:
+while main_menu_loop:
     print("\nWelcome to Charming Thyme Trattoria. Please type the number that corresponds to the option you would like to select")
 
     # This loop contains exception handling to help ensure that the proper input is entered 
     loop = True
-    while loop == True:
+    while loop:
         print("[1] Add Reservation \n[2] Cancel Reservation \n[3] Edit Reservations \n[4] Display Reservations \n[5] Generate Meal Recommendation \n[6] Exit")
 
         try:
@@ -75,7 +75,7 @@ while main_menu_loop == True:
 
         
     elif main_menu_input == 5:
-        # The while loop will keep the user in this option until they decide to exit and go back to the main menu
+        # The while loop will allow the user to ask for a new recommendation or return to the main menu
         loop = True
         while loop:
             print(f"We recommend {meal_recommendation_generator()}")
