@@ -5,7 +5,6 @@ import os
 
 
 
-
 # This function generates a meal recommendation
 def meal_recommendation_generator():
     menu_list = open("menuItems_21100649.txt", "r")
@@ -21,6 +20,7 @@ def main_menu_exit(question):
         if answer == "1" or answer == "2":
             loop = False
         else:
+            print("Please enter a valid input.")
             loop = True
     if answer == "1":
         loop = True
@@ -29,7 +29,7 @@ def main_menu_exit(question):
         loop = False
         return loop
 
-# From this point below is the code that will first be executed when running the program
+#-----------------------------------------------------------------------------#
 # This block of code will create the Reservation Display list for the Display function of the program
 reservation_list = open("reservation_21100649.txt", "r")
 reservation_list_contents = reservation_list.readlines()
@@ -48,9 +48,11 @@ while main_menu_loop:
             main_menu_input = int(input())
         except:
             print("Please enter a valid input. \n")
+            print("--------------------------------------------------------------------------------\n")
         else:
             if main_menu_input < 1 or main_menu_input > 6:
                 print("Please type the number that corresponds to the option you would like to select. \n")
+                print("----------------------------------------------------------------------------\n")
             else:
                 loop = False
     
@@ -65,16 +67,19 @@ while main_menu_loop:
         #function
 
     elif main_menu_input == 4:
-            list_count = 0
-            for i in range(len(reservation_list_contents)):
-                print(reservation_list_contents[list_count])
-                list_count += 1
-            # This input will allow the user to view the display list before returning to the main menu
-            display_exit = input("Enter any word, number or symbol to return to the main menu: ")
-            os.system('cls')
+        print("\n--------------------------------------------------------------------------------\n")
+        list_count = 0
+        for i in range(len(reservation_list_contents)):
+            print(reservation_list_contents[list_count])
+            list_count += 1
+        # This input will allow the user to view the display list before returning to the main menu
+        display_exit = input("Enter any word, number or symbol to return to the main menu: ")
+        os.system('cls')
+        print("\n--------------------------------------------------------------------------------\n")
 
         
     elif main_menu_input == 5:
+        print("\n--------------------------------------------------------------------------------\n")
         # The while loop will allow the user to ask for a new recommendation or return to the main menu
         loop = True
         while loop:
@@ -82,8 +87,12 @@ while main_menu_loop:
             loop_question = "Would you like a new recommendation or return to the main menu? \n[1] Another recommendation \n[2] Exit \n"
             loop = main_menu_exit(loop_question)
         os.system('cls')
+        print("\n--------------------------------------------------------------------------------\n")
+
 
     elif main_menu_input == 6:
         main_menu_loop = False
 
-print("\nThank you for using the program")
+print("--------------------------------------------------------------------------------")
+print("Thank you for using the program")
+
