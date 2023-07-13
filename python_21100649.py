@@ -84,7 +84,7 @@ while main_menu_loop:
         os.system('cls')
         print("\n--------------------------------------------------------------------------------")
 
-        
+
     elif main_menu_input == 5:
         print("\n--------------------------------------------------------------------------------\n")
         # The while loop will allow the user to ask for a new recommendation or return to the main menu
