@@ -6,14 +6,18 @@ import os
 
 
 # This function generates a meal recommendation
-def meal_recommendation_generator(menu_contents, min, max):
+def meal_recommendation_generator(menu_contents, min, max, previous_recommendation):
+    # This for loop helps ensure that recommendations of the same type are selected
     menu_recommendation = []
     for i in range(len(menu_contents)):
         if i >= min and i <= max:
             menu_recommendation.append(menu_contents[i])
     recommendation = random.choice(menu_recommendation)
+    # This ensures that the same recommendation won't be selected twice in a row
+    if recommendation == previous_recommendation:
+        recommendation = random.choice(menu_recommendation)
     previous_recommendation = recommendation
-    return recommendation
+    return recommendation, previous_recommendation
 
 # This function will determine if the user continues with their process or return to the main menu
 def menu_exit(question):
@@ -140,9 +144,10 @@ while main_menu_loop:
             # The loop will ask the user to ask for a new recommendation or exit
             os.system('cls')
             recommendation_loop = True
+            previous_recommendation = ""
             while recommendation_loop:
                 print("\n--------------------------------------------------------------------------------\n")
-                recommendation, previous_recommendation = meal_recommendation_generator(menu_contents, min_recommendation, max_recommendation)
+                recommendation, previous_recommendation = meal_recommendation_generator(menu_contents, min_recommendation, max_recommendation, previous_recommendation)
                 print(f"We recommend {recommendation}")
                 recommendation_loop_question = "Would you like a new recommendation? Enter a number (1-2) to select your option \n[1] Another recommendation \n[2] Exit \n>>> "
                 recommendation_loop = menu_exit(recommendation_loop_question)
