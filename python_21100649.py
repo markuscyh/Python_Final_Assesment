@@ -6,12 +6,17 @@ import os
 
 
 # This function generates a meal recommendation
-def meal_recommendation_generator(menu_contents):
-    recommendation = random.choice(menu_contents)
+def meal_recommendation_generator(menu_contents, min, max):
+    menu_recommendation = []
+    for i in range(len(menu_contents)):
+        if i >= min and i <= max:
+            menu_recommendation.append(menu_contents[i])
+    recommendation = random.choice(menu_recommendation)
+    previous_recommendation = recommendation
     return recommendation
 
 # This function will determine if the user continues with their process or return to the main menu
-def main_menu_exit(question):
+def menu_exit(question):
     loop = True
     while loop:
         answer = input(f"{question}")
@@ -45,7 +50,12 @@ while main_menu_loop:
 
     # This loop contains exception handling to help ensure that the proper input is entered 
     while True:
-        print("[1] Add Reservation \n[2] Cancel Reservation \n[3] Edit Reservations \n[4] Display Reservations \n[5] Generate Meal Recommendation \n[6] Exit")
+        print("[1] Add Reservation")
+        print("[2] Cancel Reservation")
+        print("[3] Edit Reservations")
+        print("[4] Display Reservations")
+        print("[5] Generate Meal Recommendation")
+        print("[6] Exit")
 
         try:
             main_menu_input = int(input(">>> "))
@@ -94,15 +104,53 @@ while main_menu_loop:
         print("\n--------------------------------------------------------------------------------")
 
 
-
     elif main_menu_input == 5:
-        print("\n--------------------------------------------------------------------------------\n")
-        # The while loop will allow the user to ask for a new recommendation or return to the main menu
+        # This loop allows the user to select the type of recommendation they want
         loop = True
         while loop:
-            print(f"We recommend {meal_recommendation_generator(menu_contents)}")
-            loop_question = "Would you like a new recommendation or return to the main menu? Enter a number (1-2) \n[1] Another recommendation \n[2] Exit \n>>> "
-            loop = main_menu_exit(loop_question)
+            while True:
+                print("Select the type of recommendation you would like from the numbers 1-5.")
+                print("[1] Seafood")
+                print("[2] Pork")
+                print("[3] Chicken")
+                print("[4] Beef")
+                print("[5] Sides")
+                user_recommendation = input(">>> ")
+                if user_recommendation not in "12345":
+                    print("\nPlease enter a number from 1-5 that corresponds with your selection.")
+                else: 
+                    break
+
+            # These if statements help pick the type of reservations from the reservation list
+            if user_recommendation == "1":
+                min_recommendation, max_recommendation = 0, 7
+
+            elif user_recommendation == "2":
+                min_recommendation, max_recommendation = 8, 10
+
+            elif user_recommendation == "3":
+                min_recommendation, max_recommendation = 11, 12
+
+            elif user_recommendation == "4":
+                min_recommendation, max_recommendation = 13, 17
+
+            elif user_recommendation == "5":
+                min_recommendation, max_recommendation = 18, 20
+
+            # The loop will ask the user to ask for a new recommendation or exit
+            os.system('cls')
+            recommendation_loop = True
+            while recommendation_loop:
+                print("\n--------------------------------------------------------------------------------\n")
+                recommendation, previous_recommendation = meal_recommendation_generator(menu_contents, min_recommendation, max_recommendation)
+                print(f"We recommend {recommendation}")
+                recommendation_loop_question = "Would you like a new recommendation? Enter a number (1-2) to select your option \n[1] Another recommendation \n[2] Exit \n>>> "
+                recommendation_loop = menu_exit(recommendation_loop_question)
+            
+            # This will ask the question of asking for a new recommendation type or to return to the main menu
+            print("\n--------------------------------------------------------------------------------\n")
+            loop_question = "Would you like to select a different type of recommendation or return to the main menu? Enter a number (1-2) to select your option \n[1] New recommendation type \n[2] Exit \n>>> "
+            loop = menu_exit(loop_question)
             os.system('cls')
         os.system('cls')
         print("\n--------------------------------------------------------------------------------")
@@ -112,8 +160,6 @@ while main_menu_loop:
         main_menu_loop = False
 
 
-
 reservation_list.close()
 print("--------------------------------------------------------------------------------")
 print("Thank you for using the program")
-
