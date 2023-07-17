@@ -14,7 +14,7 @@ def meal_recommendation_generator(menu_contents, min, max, previous_recommendati
             menu_recommendation.append(menu_contents[i])
     recommendation = random.choice(menu_recommendation)
     # This ensures that the same recommendation won't be selected twice in a row
-    if recommendation == previous_recommendation:
+    while recommendation == previous_recommendation:
         recommendation = random.choice(menu_recommendation)
     previous_recommendation = recommendation
     return recommendation, previous_recommendation
@@ -133,13 +133,13 @@ while main_menu_loop:
                 min_recommendation, max_recommendation = 8, 10
 
             elif user_recommendation == "3":
-                min_recommendation, max_recommendation = 11, 12
+                min_recommendation, max_recommendation = 11, 13
 
             elif user_recommendation == "4":
-                min_recommendation, max_recommendation = 13, 17
+                min_recommendation, max_recommendation = 14, 18
 
             elif user_recommendation == "5":
-                min_recommendation, max_recommendation = 18, 20
+                min_recommendation, max_recommendation = 19, 21
 
             # The loop will ask the user to ask for a new recommendation or exit
             os.system('cls')
