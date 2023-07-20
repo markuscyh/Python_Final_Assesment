@@ -1,13 +1,14 @@
 from datetime import datetime, timedelta
 
 
+
 # Function to update the reservation
 def update_reservation(reservation_list, index, change) :
     rsv_info = data[reservation_list].strip().split('|')
     rsv_info[index] = change
     data[reservation_list] = '|'.join(rsv_info) + '\n'  # Add new line character
 
-    with open('reservation_22110670.txt', 'w') as f :
+    with open('reservation_21100649.txt', 'w') as f :
         for line in data :
             f.write(line)
 
@@ -58,7 +59,7 @@ while main_menu_loop :
         # Code for updating reservations
         while True :
             reservation_name = input("Enter Guest Name To Update The Reservation: ").upper()
-            with open('reservation_22110670.txt', 'r') as f :
+            with open('reservation_21100649.txt', 'r') as f :
                 data = f.readlines()
             matching_reservations = []
 
@@ -75,7 +76,7 @@ while main_menu_loop :
             for i in range(len(matching_reservations)) :
                 reservation_index = matching_reservations[i]
                 reservation_info = data[reservation_index].strip().split('|')
-                print(f"{i + 1}) Reservation on {reservation_info[0]} at Slot {reservation_info[1]}")
+                print(f"{i + 1}) Reservation on {reservation_info[0]} at {reservation_info[1]}")
 
             while True :
                 try :
@@ -105,14 +106,14 @@ while main_menu_loop :
                                 date = input("Enter New Date (yyyy-mm-dd): ")
                                 chosen_date = datetime.strptime(date, "%Y-%m-%d").date()
                                 today = datetime.now().date()
-                                min_reservation_date = today + timedelta(
-                                    days=5)  # Minimum reservation date 5 days in advance
+                                min_reservation_date = today + timedelta(days=5)  # Minimum reservation date 5 days in advance
                                 if chosen_date < min_reservation_date :
                                     print(
                                         "Invalid Date! Reservation Should Be Made At Least 5 Days in Advance.")
                                     continue
 
                         # Check if the chosen slot on the chosen date has reached the maximum capacity (8 reservations)
+                                date = datetime.strftime(chosen_date, "%Y-%m-%d")
                                 date_slot = (date, reservation_info[1])
                                 date_slot_count = count_reservations()
                                 if date_slot in date_slot_count and date_slot_count[date_slot] >= 8 :
@@ -145,6 +146,9 @@ while main_menu_loop :
                     # Code to edit new name
                     elif user_update == '3' :
                         name_new = input("Enter New Name: ").upper()
+                        while name_new.strip() == "":
+                            print("An empty name is not accepted")
+                            name_new = input("Enter New Name: ").upper()
                         update_reservation(selected_reservation_index, 2, name_new)
                         print("Name updated successfully.")
                     # Code to edit new email
