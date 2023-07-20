@@ -98,22 +98,21 @@ while main_menu_loop :
 
                 valid_choices = ['1', '2', '3', '4', '5', '6']
                 user_update = input("Please choose a number (1-6) or 'N' to stop updating this reservation: ")
-            # Code to edit new date
+                # Code for new date
                 if user_update in valid_choices :
                     if user_update == '1' :
                         while True :
-                            try :
+                            try:
                                 date = input("Enter New Date (yyyy-mm-dd): ")
                                 chosen_date = datetime.strptime(date, "%Y-%m-%d").date()
                                 today = datetime.now().date()
                                 min_reservation_date = today + timedelta(days=5)  # Minimum reservation date 5 days in advance
                                 if chosen_date < min_reservation_date :
-                                    print(
-                                        "Invalid Date! Reservation Should Be Made At Least 5 Days in Advance.")
+                                    print("Invalid Date! Reservation Should Be Made At Least 5 Days in Advance.")
                                     continue
-
                         # Check if the chosen slot on the chosen date has reached the maximum capacity (8 reservations)
                                 date = datetime.strftime(chosen_date, "%Y-%m-%d")
+                    # Check if the chosen slot on the chosen date has reached the maximum capacity (8 reservations)
                                 date_slot = (date, reservation_info[1])
                                 date_slot_count = count_reservations()
                                 if date_slot in date_slot_count and date_slot_count[date_slot] >= 8 :
@@ -125,7 +124,7 @@ while main_menu_loop :
                                 break
                             except ValueError :
                                 print("Invalid Date Format! Please Enter The Date in The Format yyyy-mm-dd.")
-                    # Code to edit new slot
+                    # Code for new slot
                     elif user_update == '2' :
                         while True :
                             slot = input("Enter New Slot from 1-4: ")
@@ -143,20 +142,29 @@ while main_menu_loop :
                                 break
                             else :
                                 print("Invalid Slot! Please Choose Between 1-4.")
-                    # Code to edit new name
+                    # Code for new name
                     elif user_update == '3' :
-                        name_new = input("Enter New Name: ").upper()
-                        while name_new.strip() == "":
-                            print("An empty name is not accepted")
-                            name_new = input("Enter New Name: ").upper()
-                        update_reservation(selected_reservation_index, 2, name_new)
-                        print("Name updated successfully.")
-                    # Code to edit new email
+                        while True :
+                            name_new = input("Enter New Name: ").strip().upper()
+                            if name_new :
+                                update_reservation(selected_reservation_index, 2, name_new)
+                                print("Name updated successfully.")
+                                break
+                            else :
+                                print("Name cannot be blank! Please enter a valid name.")
+                    # Code for new email
+                    
                     elif user_update == '4' :
-                        email = input("Enter New Email: ").lower()
-                        update_reservation(selected_reservation_index, 3, email)
-                        print("Email updated successfully.")
-                    # Code to edit new contact number
+                        while True :
+                            email = input("Enter New Email: ").lower()
+                            if email.endswith('@gmail.com') or email.endswith('@yahoo.com') or email.endswith(
+                                    '@hotmail.com') :
+                                update_reservation(selected_reservation_index, 3, email)
+                                print("Email updated successfully.")
+                                break
+                            else :
+                                print("Invalid Email! Only gmail, yahoo, and hotmail domains are accepted.")
+                    # Code for new number
                     elif user_update == '5' :
                         while True :
                             contact = input("Enter New Contact Number: ")
@@ -166,7 +174,7 @@ while main_menu_loop :
                                 break
                             else :
                                 print("Invalid Number! Contact Should Be a 10-Digit Number.")
-                    # Code to edit new number of people
+                    # Code for new number of people
                     elif user_update == '6' :
                         while True :
                             num_people = input("Enter New Number of People: ")
@@ -176,10 +184,9 @@ while main_menu_loop :
                                 break
                             else :
                                 print("Invalid Number of People! Maximum is 4.")
-
                 elif user_update.upper() == 'N' :
                     break
-            # Code to ask user if they want to update another reservation
+
             any_more_reservations = input("Do You Have Another Reservation To Update? (Y/N): ").upper()
             if any_more_reservations != 'Y' :
                 break
@@ -197,4 +204,6 @@ while main_menu_loop :
 
 print("--------------------------------------------------------------------------------")
 print("Thank you for using the program")
+
+
 
