@@ -208,7 +208,7 @@ while main_menu_loop:
                     
                     elif user_update == '4' :
                         while True :
-                            email = input("\nEnter New Email: ").lower()
+                            email = input("\nEnter New Email: ")
                             if " " in email:
                                 print("Invalid Email! No spaces are allowed in an email.")
                             elif email.endswith('@gmail.com') or email.endswith('@yahoo.com') or email.endswith('@hotmail.com'):
