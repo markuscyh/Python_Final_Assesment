@@ -60,18 +60,27 @@ def menu_exit(question):
 
 
 #-----------------------------------------------------------------------------#
+# This variable enables the main menu 
+main_menu_loop = True
+
 # This block of code will create the Display list for the Display function of the program
-reservation_list = open("reservation_21100649.txt", "r")
-reservation_list_contents = reservation_list.readlines()
-reservation_list_contents.sort()
-display_list = tuple(reservation_list_contents)
+try:
+    with open("reservation_21100649.txt", "r") as reservation_list:
+        reservation_list_contents = reservation_list.readlines()
+        reservation_list_contents.sort()
+        display_list = tuple(reservation_list_contents)
+except FileNotFoundError:
+    main_menu_loop = False
+    print("Reservation file not Found! Please contact management for assistance!")
 
 # This block of code will create the list for the menu recommendation
-menu_list = open("menuItems_21100649.txt", "r")
-menu_contents = menu_list.readlines()
-menu_list.close()
+try:
+    with open("menuItems_21100649.txt", "r") as menu_list:
+        menu_contents = menu_list.readlines()
+except:
+    main_menu_loop = False
+    print("Menu file not found! Please contact management for assistance!")
 
-main_menu_loop = True
 while main_menu_loop:
     print("\nWelcome to Charming Thyme Trattoria. Please enter a number (1-6) that corresponds to the option you would like to select")
 
