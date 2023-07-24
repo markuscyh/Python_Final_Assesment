@@ -278,7 +278,7 @@ while main_menu_loop:
                     
                     #Finalizing the inputs
                     while ADD_RSV_loop:
-                        print("Reservation details to be added:\nDate: {0}\nSession slot: \nCustomer name: {1}\nCustomer email: {2}\nCustomer contact number: {3}\nReservation size: {4}".format(RSV_Date_input, Rsv_Name_input, RSV_Email_input, RSV_PhoneNum_input, RSV_Size_input))
+                        print("Reservation details to be added:\nDate: {0}\nSession slot: {1}\nCustomer name: {2}\nCustomer email: {3}\nCustomer contact number: {4}\nReservation size: {5}".format(RSV_Date_input, RSV_Slot_input ,Rsv_Name_input, RSV_Email_input, RSV_PhoneNum_input, RSV_Size_input))
                         print("\nWould you like to:\n[1] Add the reservation and then prepare another one\n[2] Add the reservation and return to main menu\n[3] (In case of errors) Redo the reservation process\n[4] Cancel the add reservation process")
                         ADD_RSV_selection = input("Please enter your selection here: ")
 
