@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import os
 
 
 
@@ -29,13 +30,11 @@ def count_reservations() :
 # Main menu loop
 main_menu_loop = True
 while main_menu_loop :
-    print(
-        "\nWelcome to Charming Thyme Trattoria. Please enter the number that corresponds to the option you would like to select")
+    print("\nWelcome to Charming Thyme Trattoria. Please enter the number that corresponds to the option you would like to select")
 
     # This loop contains exception handling to ensure proper input is entered
     while True :
-        print(
-            "[1] Add Reservation \n[2] Cancel Reservation \n[3] Edit Reservations \n[4] Display Reservations \n[5] Generate Meal Recommendation \n[6] Exit")
+        print("[1] Add Reservation \n[2] Cancel Reservation \n[3] Edit Reservations \n[4] Display Reservations \n[5] Generate Meal Recommendation \n[6] Exit")
 
         try :
             main_menu_input = int(input(">>> "))
@@ -56,6 +55,7 @@ while main_menu_loop :
         # Function to cancel reservation
 
     elif main_menu_input == 3 :
+        os.system('cls')
         # Code for updating reservations
         while True :
             reservation_name = input("Enter Guest Name To Update The Reservation: ").upper()
@@ -69,10 +69,10 @@ while main_menu_loop :
                     matching_reservations.append(i)
 
             if not matching_reservations :
-                print(f'{reservation_name} NOT FOUND')
+                print(f'{reservation_name} NOT FOUND\n')
                 continue
 
-            print(f"Multiple reservations found for {reservation_name}:")
+            print(f"\nReservations found for {reservation_name}:")
             for i in range(len(matching_reservations)) :
                 reservation_index = matching_reservations[i]
                 reservation_info = data[reservation_index].strip().split('|')
