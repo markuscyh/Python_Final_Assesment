@@ -276,9 +276,11 @@ while main_menu_loop:
         while loop:
             continue_question = "Do you want to proceed? Please choose the corresponding number (1-2) of your option \n[1] Continue \n[2] Return to Main Menu \n>>> "
             loop = menu_exit(continue_question)
+            
             if loop == False:
                 os.system('cls')
                 break
+            
             if loop == True:
             # This block asks the user to enter the date of the reservations that they want to see
                 display_list = []
