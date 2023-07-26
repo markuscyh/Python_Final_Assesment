@@ -176,7 +176,7 @@ while main_menu_loop:
                                     continue
                         # Check if the chosen slot on the chosen date has reached the maximum capacity (8 reservations)
                                 date = datetime.strftime(chosen_date, "%Y-%m-%d")
-                    # Check if the chosen slot on the chosen date has reached the maximum capacity (8 reservations)
+                        # Check if the chosen slot on the chosen date has reached the maximum capacity (8 reservations)
                                 date_slot = (date, reservation_info[1])
                                 date_slot_count = count_reservations()
                                 if date_slot in date_slot_count and date_slot_count[date_slot] >= 8 :
@@ -272,26 +272,54 @@ while main_menu_loop:
 
 
     elif main_menu_input == 4:
-        print("\n--------------------------------------------------------------------------------\n")
-        display_guide = "No. | {0:^10} | {1:^6} | {2:^15} | {3:^31} | {4:^10} | {5:^1} \n".format("Date","Slot","Name","Email","Phone Num","PAX")
-        print(display_guide)
-
-        list_count = 1
-        for i in range(len(display_list)):
-            if i % 10 == 0 and i != 0:
-                display_continue = input("Enter any word, number or symbol to return to continue: ")
+        loop = True
+        while loop:
+            continue_question = "Do you want to proceed? Please choose the corresponding number (1-2) of your option \n[1] Continue \n[2] Return to Main Menu \n>>> "
+            loop = menu_exit(continue_question)
+            if loop == False:
                 os.system('cls')
-                print(display_guide)
-            display_list_contents = display_list[i]
-            display_list_contents = display_list_contents.split("|")
-            display_output = "{0:^3} | {1:^1} | {2:^1} | {3:^15} | {4:^31} | {5:^10} |  {6:^1}".format(list_count,display_list_contents[0], display_list_contents[1], display_list_contents[2], display_list_contents[3], display_list_contents[4], display_list_contents[5])
-            print(display_output)
-            list_count += 1
+                break
+            if loop == True:
+            # This block asks the user to enter the date of the reservations that they want to see
+                display_list = []
+                while True:
+                    try:
+                        date = input("\nEnter the date (yyyy-mm-dd) of the reservations you want to see (yyyy-mm-dd)\n>>> ")
+                        chosen_date = datetime.strptime(date, "%Y-%m-%d").date()
+                        date = datetime.strftime(chosen_date, "%Y-%m-%d")
+                        date_exists = False
+                        for i in range(len(reservation_list_contents)):
+                            if date in reservation_list_contents[i]:
+                                display_list.append(reservation_list_contents[i])
+                                date_exists = True
+                        if date_exists == True:
+                            break
+                        if date_exists == False:
+                            print("\nThere is no reservation on that date")
+                    except ValueError:
+                        print("\nPlease enter a valid date \n")
 
-        # This input will allow the user to view the display list before returning to the main menu
-        display_exit = input("Enter any word, number or symbol to return to the main menu: ")
-        os.system('cls')
-        print("\n--------------------------------------------------------------------------------")
+                print("\n--------------------------------------------------------------------------------\n")
+                display_guide = "No. | {0:^10} | {1:^6} | {2:^15} | {3:^31} | {4:^10} | {5:^1} \n".format("Date","Slot","Name","Email","Phone Num","PAX")
+                print(display_guide)
+
+                list_count = 1
+                for i in range(len(display_list)):
+                    if i % 10 == 0 and i != 0:
+                        display_continue = input("Enter any word, number or symbol to return to continue: ")
+                        os.system('cls')
+                        print(display_guide)
+                    display_list_contents = display_list[i]
+                    display_list_contents = display_list_contents.split("|")
+                    display_output = "{0:^3} | {1:^1} | {2:^1} | {3:^15} | {4:^31} | {5:^10} |  {6:^1}".format(list_count,display_list_contents[0], display_list_contents[1], display_list_contents[2], display_list_contents[3], display_list_contents[4], display_list_contents[5])
+                    print(display_output)
+                    list_count += 1
+
+            # This input will allow the user to view the display list before returning to the main menu
+            display_exit = input("Enter any word, number or symbol to return to the main menu: ")
+            os.system('cls')
+            print("\n--------------------------------------------------------------------------------")
+            break
 
 
 
