@@ -202,10 +202,10 @@ while main_menu_loop:
                         #Used to catch Value Error exception
                         try:
 
-                            print("RESERVATION DATE:") #Subsection name
+                            print("SELECTED RESERVATION DATE") #Subsection name
 
                             #Subsection input
-                            RSV_Date_input_initial = input("NOTICE:\nThe date of the reservation must be 5 days in advacned from today {0}\nThe escape code is today's date.\nPlease enter the date of the reservation in the format (YYYY-mm-dd): ".format(FM_today))
+                            RSV_Date_input_initial = input("NOTICE!\nThe date of the reservation must be 5 days in advacned from today {0}\nThe escape code is today's date.\nPlease enter the date of the reservation in the format (YYYY-mm-dd): ".format(FM_today))
 
                         #Catchses exception, allows program to keep functioning
                         except ValueError:
@@ -419,7 +419,7 @@ while main_menu_loop:
                             
                             #UI presented to user. Displays date of reservation, status of the slots and how many are still available.
                             os.system('cls')
-                            print("RESERVATION SLOT\nNOTICE:\nEach session can accomodate a maximum of 8 reservations\nIf you entered here on accident, press 5 to return to the add reservation submenu\n{0}\n".format("------------------------------"))
+                            print("SELECTED RESERVATION SLOT\nNOTICE!\nEach session can accomodate a maximum of 8 reservations\nIf you entered here on accident, press 5 to return to the add reservation submenu\n")
                             print("Details of the reservation slots on {0}\n[1] Session 1: 12:00pm - 02:00pm | Status: {1}\n[2] Session 2: 02:00pm - 04:00pm | Status: {2}\n[3] Session 3: 06:00pm - 08:00pm | Status: {3}\n[4] Session 4: 08:00pm - 10:00pm | Status: {4}\n[5] Return to add reservation submenu".format(FM_RSV_Date_input_final, RSV_Slot1_status, RSV_Slot2_status, RSV_Slot3_status, RSV_Slot4_status))
                             while RSV_Slot_Selection_loop:
                                 RSV_Slot_Selection = input("Please enter your selection here: ")
@@ -527,44 +527,44 @@ while main_menu_loop:
                 
                 #Customer name is selected
                 elif RSV_Selection == '3':
-                        os.system('cls')
-                        while True: #Subsection loop
+                    os.system('cls')
+                    while True: #Subsection loop
 
-                            #Subsection name                   
-                            print("CUSTOMER NAME:")
+                        #Subsection name                   
+                        print("SELECTED CUSTOMER NAME")
 
-                            #Subsection prompts
-                            print("NOTICE:\nOne customer name per reservation slot.\nEnsure that there are no symbols or numbers in the customer's name as they will automatically be removed.\nThe escape code is 'ESCAPE'\n")
+                        #Subsection prompts
+                        print("NOTICE!\nOne customer name per reservation slot.\nEnsure that there are no symbols or numbers in the customer's name as they will automatically be removed.\nThe escape code is 'ESCAPE'\n")
+                        
+                        #Input
+                        RSV_Name_input = input("Please enter the customer's name: ").upper()
+
+                        #If escape input entered, returns to ADD submenu.
+                        if RSV_Name_input == 'ESCAPE':
+                            os.system('cls')
+                            ADD_RSV_selection_loop = False
+                            break
                             
-                            #Input
-                            RSV_Name_input = input("Please enter the customer's name: ").upper()
+                        #Else, it proceeds.
+                        else:
+                            #Formats customer name. Removes digits and symbols (forbidden_symbols) used.
+                            FM_RSV_Name_input = ''.join((x for x in RSV_Name_input if not x.isdigit()))
+                            
+                            FM2_RSV_Name_input = ''.join(x for x in FM_RSV_Name_input if not x in forbidden_symbols)
 
-                            #If escape input entered, returns to ADD submenu.
-                            if RSV_Name_input == 'ESCAPE':
-                                os.system('cls')
+                            #If name has at least 2 letters, it is valid.
+                            if len(FM2_RSV_Name_input) >=2:
+
+                                #Input accepted
                                 ADD_RSV_selection_loop = False
+                                os.system('cls')
+                                print("Customer Name has been succesfully added")
                                 break
                             
-                            #Else, it proceeds.
-                            else:
-                                #Formats customer name. Removes digits and symbols (forbidden_symbols) used.
-                                FM_RSV_Name_input = ''.join((x for x in RSV_Name_input if not x.isdigit()))
-                                
-                                FM2_RSV_Name_input = ''.join(x for x in FM_RSV_Name_input if not x in forbidden_symbols)
-
-                                #If name has at least 2 letters, it is valid.
-                                if len(FM2_RSV_Name_input) >=2:
-
-                                    #Input accepted
-                                    ADD_RSV_selection_loop = False
-                                    os.system('cls')
-                                    print("Customer Name has been succesfully added")
-                                    break
-                                
-                                #NInput is rejected. 
-                                else: 
-                                    os.system('cls')
-                                    print("Error: No name entered!\nPlease enter a valid name!.\nTry again.\n")
+                            #Input is rejected. 
+                            else: 
+                                os.system('cls')
+                                print("Error: No name entered!\nPlease enter a valid name!.\nTry again.\n")
         
                 #Customer email is selected.
                 elif RSV_Selection == '4':
@@ -573,10 +573,10 @@ while main_menu_loop:
                     while True:             
 
                         #Subsection name
-                        print("CUSTOMER EMAIL:")
+                        print("SELECTED CUSTOMER EMAIL")
 
                         #Subsection prompt
-                        print("NOTICE:\nEmail must be in correct format (E.g ExampleEmail@gmail.com)\ngmail, hotmail and yahoo domains are supported.\nThe escape code is 'ESCAPE'")
+                        print("NOTICE!\nEmail must be in correct format (E.g ExampleEmail@gmail.com)\ngmail, hotmail and yahoo domains are supported.\nThe escape code is 'ESCAPE'")
                         
                         #Input
                         RSV_Email_input_initial = input("Please enter the customer's email address: ")
@@ -593,18 +593,22 @@ while main_menu_loop:
                                 #Input is invalid if 2 or more email domains are found.
                                 #If all 3
                                 if "@gmail.com" in RSV_Email_input_initial and "@yahoo.com" in RSV_Email_input_initial and "@hotmail.com" in RSV_Email_input_initial:
+                                    os.system('cls')
                                     print("Error: Invalid customer email.\nOnly 1 email domain can be supported in the email.\nTry again.\n")
                                 
                                 #If gmail and other (yahoo or hotmail)
                                 elif "@gmail.com" in RSV_Email_input_initial and "@yahoo.com" in RSV_Email_input_initial or "@gmail.com" in RSV_Email_input_initial and "@hotmail.com" in RSV_Email_input_initial:
+                                    os.system('cls')
                                     print("Error: Invalid customer email.\nOnly 1 email domain can be supported in the email.\nTry again.\n")
 
                                 #If yahoo and hotmail
                                 elif "@yahoo.com" in RSV_Email_input_initial and "@hotmail.com" in RSV_Email_input_initial:
+                                    os.system('cls')
                                     print("Error: Invalid customer email.\nOnly 1 email domain can be supported in the email.\nTry again.\n")
 
                                 #Invalid input if the email starts with the domains.
                                 elif RSV_Email_input_initial.startswith("@gmail.com") or RSV_Email_input_initial.startswith("@yahoo.com") or RSV_Email_input_initial.startswith("@hotmail.com"):
+                                    os.system('cls')
                                     print("Error: Invalid customer email.\nDomain name alone was enterred and it is not sufficient.\nTry again.\n")
 
                                 else:
@@ -632,10 +636,10 @@ while main_menu_loop:
                     while True:
 
                         #Subsection name
-                        print("CUSTOMER CONTACT NUMBER:")
+                        print("SELECTED CUSTOMER CONTACT NUMBER")
 
                         #Subsection prompt
-                        print("NOTICE:\n1.Customer contact number MUST be 10 digits long.\n2.Must start with 01.\nThe escape code is '0'")
+                        print("NOTICE!\n1.Customer contact number MUST be 10 digits long.\n2.Must start with 01.\nThe escape code is '0'")
                         
                         #Input
                         RSV_PhoneNum_input_initial = input("Please enter the customer's contact number: ")
@@ -688,9 +692,9 @@ while main_menu_loop:
                     #Getting the reservation size.
                     while True:
                         #Subsection name
-                        print("RESERVATION SIZE:")
+                        print("SELECTED RESERVATION SIZE")
                         #Subsection prompt
-                        print("NOTICE:\nThe reservation size cannot be more than 4.\nThe escape code is '0'")
+                        print("NOTICE!\nThe reservation size cannot be more than 4.\nThe escape code is '0'")
                         
                         #Because input is integer. Prepared to catch exception
                         try:
@@ -736,8 +740,8 @@ while main_menu_loop:
                     #Used to double check, to ensure that data is not lost by accident.
                     while True:
                         os.system('cls')
-
-                        print("Are you sure you wish to return to main menu?\nYour progress will not be saved, and therefore need to be entered again.\n[1] Return to Main Menu\n[2] No, remain in program")
+                        print("SELECTED RETURN TO MAIN MENU")
+                        print("Are you sure you wish to return to main menu?\nYour progress will not be saved, and therefore need to be entered again.\n[1] Return to Main Menu\n[2] No, remain in program\n")
                         RSV_ADD_Exit_Selection = input("Please enter your selection here: ")
                         
                         #User succesfully returns to main menu
@@ -761,7 +765,7 @@ while main_menu_loop:
                         #Invalid selection
                         else:
                             os.system('cls')
-                            print("Error: Invalid selection!\nPlease use one of the given options (1-2) as your selection\nTry again.")
+                            print("Error: Invalid selection!\nPlease use one of the given options (1-2) as your selection\nTry again.\n")
 
                 #User selects to reset the reservation details
                 elif RSV_Selection == '8':
@@ -769,16 +773,17 @@ while main_menu_loop:
 
                     #Used to double check to ensure that data is not lost by accident.
                     while True:
-                        print("Are you sure you wish to restart your the program process?\n[1] Yes\n[2] No")
+                        print("SELECTED RESTART PROGRAM")
+                        print("Are you sure you wish to restart your the program process?\n[1] Yes\n[2] No\n")
                         RSV_ADD_Reset_Selection = input("Please enter your selection here: ")
                         
                         #Succesfully restarts
                         if RSV_ADD_Reset_Selection == '1':
 
                             #Used to revert all progress into blank data.
-                            RSV_Date_input_final = ''
+                            FM_RSV_Date_input_final = ''
                             RSV_Slot_input = ''
-                            RSV_Name_input = ''
+                            FM2_RSV_Date_input = ''
                             RSV_Email_input_final = ''
                             RSV_PhoneNum_input_final = ''
                             RSV_Size_input_final = ''
@@ -798,7 +803,7 @@ while main_menu_loop:
                         #Invalid selection
                         else:
                             os.system('cls')
-                            print("Error: Invalid selection!\nPlease use one of the given options (1-2) as your selection\nTry again.")
+                            print("Error: Invalid selection!\nPlease use one of the given options (1-2) as your selection\nTry again.\n")
                 
                 #User wishes to append the reservation onto the text file
                 elif RSV_Selection == '9' or RSV_Selection == '10':
