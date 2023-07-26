@@ -315,7 +315,6 @@ while main_menu_loop:
                             Slot2_count = 0
                             Slot3_count = 0
                             Slot4_count = 0
-                            date_count_2 = 0
 
                             #How many slots of each session are still available for this date.
                             Slot1_available = 0
