@@ -198,14 +198,14 @@ while main_menu_loop:
 
                         #Used to see if entered date is 5 days in advance from today.
                         Date_minimum = today + timedelta(days=5)
-
+                        
+                        print("SELECTED RESERVATION DATE") #Subsection name
+                        print("NOTICE!\nThe date of the reservation must be 5 days in advacned from today {0}\nThe escape code is today's date.\n") #otice
                         #Used to catch Value Error exception
+                        
                         try:
-
-                            print("SELECTED RESERVATION DATE") #Subsection name
-
                             #Subsection input
-                            RSV_Date_input_initial = input("NOTICE!\nThe date of the reservation must be 5 days in advacned from today {0}\nThe escape code is today's date.\nPlease enter the date of the reservation in the format (YYYY-mm-dd): ".format(FM_today))
+                            RSV_Date_input_initial = input("Please enter the date of the reservation in the format (YYYY-mm-dd): ".format(FM_today))
 
                         #Catchses exception, allows program to keep functioning
                         except ValueError:
@@ -739,8 +739,8 @@ while main_menu_loop:
                     #Used to double check, to ensure that data is not lost by accident.
                     while True:
                         os.system('cls')
-                        print("SELECTED RETURN TO MAIN MENU")
-                        print("Are you sure you wish to return to main menu?\nYour progress will not be saved, and therefore need to be entered again.\n[1] Return to Main Menu\n[2] No, remain in program\n")
+                        print("SELECTED CANCEL ADD RESERVATION PROGRAM")
+                        print("Are you sure you wish to cancel the add reservation process and return to main menu?\nYour progress will not be saved, and therefore need to be entered again.\n[1] Yes, return to Main Menu\n[2] No, remain in program\n")
                         RSV_ADD_Exit_Selection = input("Please enter your selection here: ")
                         
                         #User succesfully returns to main menu
@@ -750,7 +750,6 @@ while main_menu_loop:
                             ADD_RSV_selection_loop = False
 
                             os.system('cls')
-                            print("Successfully returned to main menu.\n")
                             break
                         
                         #User does not return to main menu
@@ -772,8 +771,8 @@ while main_menu_loop:
 
                     #Used to double check to ensure that data is not lost by accident.
                     while True:
-                        print("SELECTED RESTART PROGRAM")
-                        print("Are you sure you wish to restart your the program process?\n[1] Yes\n[2] No\n")
+                        print("SELECTED RESTART ADD RESERVATION PROGRESS")
+                        print("Are you sure you wish to restart your process?\n[1] Yes\n[2] No\n")
                         RSV_ADD_Reset_Selection = input("Please enter your selection here: ")
                         
                         #Succesfully restarts
@@ -781,22 +780,22 @@ while main_menu_loop:
 
                             #Used to revert all progress into blank data.
                             FM_RSV_Date_input_final = ''
+                            FM2_RSV_Name_input = ''
                             RSV_Slot_input = ''
-                            FM2_RSV_Date_input = ''
                             RSV_Email_input_final = ''
                             RSV_PhoneNum_input_final = ''
                             RSV_Size_input_final = ''
 
                             os.system('cls')
                             ADD_RSV_selection_loop = False
-                            print("Program restarted sucessfully")
+                            print("Progress restarted sucessfully")
                             break
                         
                         #Returns to submenu
                         elif RSV_ADD_Reset_Selection == '2':
                             ADD_RSV_selection_loop = False
                             os.system('cls')
-                            print("Aborted program restart succesfully")
+                            print("Aborted progress restart succesfully")
                             break
                         
                         #Invalid selection
@@ -808,7 +807,7 @@ while main_menu_loop:
                 elif RSV_Selection == '9' or RSV_Selection == '10':
                     
                     #To append to text file, ALL DETAILS MUST NOT BE BLANK SPACE
-                    if RSV_Date_input_final == '' or RSV_Slot_input == '' or FM2_RSV_Name_input == '' or RSV_Email_input_final == '' or RSV_PhoneNum_input_final == '' or RSV_Size_input_final == '':
+                    if FM_RSV_Date_input_final == '' or RSV_Slot_input == '' or FM2_RSV_Name_input == '' or RSV_Email_input_final == '' or RSV_PhoneNum_input_final == '' or RSV_Size_input_final == '':
                         
                         os.system('cls')
                         ADD_RSV_selection_loop = False
