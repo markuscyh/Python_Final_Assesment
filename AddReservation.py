@@ -12,7 +12,7 @@ def ADD_Reservation():
 
         #Appends the reservation line onto the text file
         ADD.write(ADD_Reservation_str)
-        
+
         #Close file
         ADD.close()
 
@@ -124,14 +124,31 @@ while main_menu_loop:
     if main_menu_input == 1:
         #Code for adding reservations.
         os.system('cls')
-        
+            
         #Initial assigning of input variables.
+        
         FM_RSV_Date_input_final = ''
         RSV_Slot_input = ''
         FM2_RSV_Name_input = ''
         RSV_Email_input_final = ''
         RSV_PhoneNum_input_final = ''
         RSV_Size_input_final = ''
+
+        RSV_Slot1_status = ''
+        RSV_Slot2_status = ''
+        RSV_Slot3_status = ''
+        RSV_Slot4_status = ''
+
+        Slot1_availble = 0
+        Slot2_available = 0
+        Slot3_available = 0
+        Slot4_available = 0
+
+        Slot1_count = 0
+        Slot2_count = 0
+        Slot3_count = 0
+        Slot4_count = 0
+
 
         ADD_RSV_loop = True #The parent loop
         while ADD_RSV_loop:
@@ -169,9 +186,6 @@ while main_menu_loop:
                 #Reservation date has been chosen
                 if RSV_Selection == '1':
                     
-                    #In the case that the user resellects the date to edit it. This will automatically redefine the slot back to blank space.
-                    RSV_Slot_input = ''
-
                     os.system('cls')
                     
                     #Getting the date of the reservation
@@ -231,6 +245,41 @@ while main_menu_loop:
                                             os.system('cls')
                                             print("Reservation date succesfully added")
 
+                                            #In the case that the user resellects the date to edit it. This will automatically redefine the slot back to blank space, IF the selected slot on that date is full.
+                                            if RSV_Slot_input == 'Slot 1' or RSV_Slot_input == 'Slot 2' or RSV_Slot_input == 'Slot 3' or RSV_Slot_input == 'Slot 4':
+                                                    
+                                                    with open('reservation_21100649.txt', 'r') as test:
+                                                        slot_data = test.readlines()
+                                                        for i in range(len(slot_data)):
+                                                            slot_data2 = slot_data[i].strip().split('|')
+                                                        
+                                                            #Only concenrs the lines where the selected date occurs in the text file
+                                                            if slot_data2[0] == FM_RSV_Date_input_final:
+
+                                                                #If specified slot appears, add 1 to the count.
+                                                                if slot_data2[1] == 'Slot 1':
+                                                                    Slot1_count += 1
+
+                                                                elif slot_data2[1] == 'Slot 2':
+                                                                    Slot2_count += 1
+                                                                    
+                                                                elif slot_data2[1] == 'Slot 3':
+                                                                    Slot3_count += 1
+
+                                                                elif slot_data2[1] == 'Slot 4':
+                                                                    Slot4_count += 1
+
+                                                        if RSV_Slot1_status == 8 and RSV_Slot_input == 'Slot 1':
+                                                            RSV_Slot_input = ''
+
+                                                        elif RSV_Slot2_status == 8 and RSV_Slot_input == 'Slot 2':
+                                                            RSV_Slot_input = ''
+
+                                                        elif RSV_Slot3_status == 8 and RSV_Slot_input == 'Slot 3':
+                                                            RSV_Slot_input = ''
+
+                                                        elif RSV_Slot4_status == 8 and RSV_Slot_input == 'Slot 4':
+                                                            RSV_Slot_input = ''
                                             break
                                         #The date was full. (Occurred 32 times)
                                         else:
@@ -776,6 +825,21 @@ while main_menu_loop:
                             RSV_Email_input_final = ''
                             RSV_PhoneNum_input_final = ''
                             RSV_Size_input_final = ''
+
+                            RSV_Slot1_status = ''
+                            RSV_Slot2_status = ''
+                            RSV_Slot3_status = ''
+                            RSV_Slot4_status = ''
+
+                            Slot1_availble = 0
+                            Slot2_available = 0
+                            Slot3_available = 0
+                            Slot4_available = 0
+
+                            Slot1_count = 0
+                            Slot2_count = 0
+                            Slot3_count = 0
+                            Slot4_count = 0
 
                             #Feedback
                             os.system('cls')
