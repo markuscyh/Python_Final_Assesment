@@ -111,8 +111,43 @@ while main_menu_loop:
         pass
         #function
     elif main_menu_input == 2:
-        pass
-        #function
+        reservations = []
+        
+        data = ''
+    
+        with open('reservation_21100649.txt', 'r') as f :
+                data = f.readlines()
+    
+        for i in range(len(data)) :
+            reservations.append(data[i])
+    
+        if not reservations:
+            print("No reservations to delete. Please add some reservations")
+            break
+        else:
+            while True:
+                try:
+                    print("Reservations:")
+                    reservations.sort()
+                    for i, reservation in enumerate(reservations, 1):
+                        data = reservation.split('|')
+                        print("{} : Date - [{}] || Session - [{}] || Name - [{}]".format(i, data[0], data[1], data[2]))
+                    cancel_choice = int(input("\nEnter the number of the reservation you want to cancel (or 0 to go back): "))
+                    if cancel_choice == 0:
+                        break
+                    elif cancel_choice < 1 or cancel_choice > len(reservations):
+                        print("Invalid input. Please enter a valid reservation number.")
+                    else:
+                        canceled_reservation = reservations.pop(cancel_choice - 1)
+                        data = canceled_reservation.split('|')
+                        print("Reservation for {} on {} at {} has been canceled.\n\n".format(data[2], data[0], data[1]))
+                    
+                        with open('reservation_21100649.txt', 'w') as f :
+                            for line in reservations :
+                                f.write(line)
+                            
+                except ValueError:
+                    print("Invalid input. Please enter a valid reservation number.")
 
 
     elif main_menu_input == 3:
@@ -270,7 +305,6 @@ while main_menu_loop:
                 break
         
 
-
     elif main_menu_input == 4:
         loop = True
         while loop:
@@ -301,6 +335,7 @@ while main_menu_loop:
                     except ValueError:
                         print("\nPlease enter a valid date \n")
 
+                # This block displays the list of reservations
                 print("\n--------------------------------------------------------------------------------\n")
                 display_guide = "No. | {0:^10} | {1:^6} | {2:^15} | {3:^31} | {4:^10} | {5:^1} \n".format("Date","Slot","Name","Email","Phone Num","PAX")
                 print(display_guide)
@@ -322,7 +357,6 @@ while main_menu_loop:
             os.system('cls')
             print("\n--------------------------------------------------------------------------------")
             break
-
 
 
     elif main_menu_input == 5:
@@ -376,7 +410,6 @@ while main_menu_loop:
             os.system('cls')
         os.system('cls')
         print("\n--------------------------------------------------------------------------------")
-
 
 
     elif main_menu_input == 6:
