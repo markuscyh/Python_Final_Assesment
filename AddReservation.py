@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 # Function to add the reservation details
 def ADD_Reservation():
     with open('reservations_21100649.txt', 'a+') as ADD:
-        ADD_Reservation_str = ("\n{0}|{1}|{2}|{3}|{4}|{5}".format(RSV_Date_input, RSV_Slot_input, FM2_RSV_Name_input, RSV_Email_input, RSV_PhoneNum_input, RSV_Size_input))
+        ADD_Reservation_str = ("\n{0}|{1}|{2}|{3}|{4}|{5}".format(RSV_Date_input_final, RSV_Slot_input, FM2_RSV_Name_input, RSV_Email_input_final, RSV_PhoneNum_input_final, RSV_Size_input_final))
         ADD.write(ADD_Reservation_str)
         print("Reservation has been added sucessfully!")
         ADD.close()
@@ -119,12 +119,12 @@ while main_menu_loop:
         os.system('cls')
         
         #Initial assigning of user input.
-        RSV_Date_input = ''
+        RSV_Date_input_final = ''
         RSV_Slot_input = ''
         FM2_RSV_Name_input = ''
-        RSV_Email_input = ''
-        RSV_PhoneNum_input = ''
-        RSV_Size_input = ''
+        RSV_Email_input_final = ''
+        RSV_PhoneNum_input_final = ''
+        RSV_Size_input_final = ''
 
         ADD_RSV_loop = True #Starts the Sub Program
         while ADD_RSV_loop:
@@ -144,8 +144,8 @@ while main_menu_loop:
 
             #Prompt and start of Submenu UI
             print("ADD RESERVATION SUBMENU\n")
-            print("Reservation details\n{6}\nReservation Date: {0}\nReservation Session Slot: {1}\nCustomer Name: {2}\nCustomer Email: {3}\nCustomer Phone Number: {4}\nReservation Size: {5}\n{6}\n".format(RSV_Date_input, RSV_Slot_input, FM2_RSV_Name_input, RSV_Email_input, RSV_PhoneNum_input, RSV_Size_input,"------------------------------"))
-            print("Please enter (or fix) the reservation details for:\n[1] Reservation Date\n[2] Reservation Session Slot\n[3] Customer Name\n[4] Customer Email\n[5] Customer Phone Number\n[6] Reservation Size\n\nOr would you like to:\n[7] Cancel the reservation process and return to main menu\n[8] Restart the reservation process\n[9] Add the reservation details and prepare another one\n[10] Add the reservation details and return to main menu\n")
+            print("Reservation details\n{6}\nReservation Date: {0}\n\nReservation Session Slot: {1}\n\nCustomer Name: {2}\n\nCustomer Email: {3}\n\nCustomer Phone Number: {4}\n\nReservation Size: {5}\n{6}\n".format(RSV_Date_input_final, RSV_Slot_input, FM2_RSV_Name_input, RSV_Email_input_final, RSV_PhoneNum_input_final, RSV_Size_input_final,"------------------------------"))
+            print("Please enter (or fix) the reservation details for:\n[1] Reservation Date\n[2] Reservation Session Slot (Done only after Reservation Date)\n[3] Customer Name\n[4] Customer Email\n[5] Customer Phone Number\n[6] Reservation Size\n\nOr would you like to:\n[7] Cancel the reservation process and return to main menu\n[8] Restart the reservation process\n[9] Add the reservation details and prepare another one\n[10] Add the reservation details and return to main menu\n")
 
             while ADD_RSV_selection_loop:
                 RSV_Selection = input("Please enter your selection from 1-10 here: ")
@@ -162,7 +162,7 @@ while main_menu_loop:
                         Date_minimum = today + timedelta(days=4)
                         try:
                             print("RESERVATION DATE:")
-                            RSV_Date_input = input("NOTICE:\nThe date of the reservation must be 5 days in advacned from today {0}\nThe escape code is today's date.\nPlease enter the date of the reservation in the format (YYYY-mm-dd): ".format(FM_today))
+                            RSV_Date_input_initial = input("NOTICE:\nThe date of the reservation must be 5 days in advacned from today {0}\nThe escape code is today's date.\nPlease enter the date of the reservation in the format (YYYY-mm-dd): ".format(FM_today))
                             
                         except ValueError:
                             os.system('cls')
@@ -170,32 +170,32 @@ while main_menu_loop:
                             
                         else:
                             try:
-                                FM_RSV_DATE_input = datetime.strptime(RSV_Date_input, "%Y-%m-%d")
+                                FM_RSV_DATE_input = datetime.strptime(RSV_Date_input_initial, "%Y-%m-%d")
                             except:
                                 os.system('cls')
                                 print("Error: Invalid seperator format!\nPlease enter the date of the reservation in (YYYY-MM-DD) format.\nTry again\n")
 
                             else:
-                                if RSV_Date_input != FM_today:
-                                
-                                    if FM_RSV_DATE_input <= Date_minimum and RSV_Date_input != FM_today:
+                                if RSV_Date_input_initial != FM_today:
+                                    
+                                    if FM_RSV_DATE_input <= Date_minimum:
                                         os.system('cls')
                                         print("Error: Invalid date selected!\nYou can only apply for a reservation at least 5 days in advance from today\nPlease try again\n")
                                     
                                     else:
+                                        RSV_Date_input_final = RSV_Date_input_initial
                                         with open('reservation_21100649.txt', 'r') as dt:
                                             RSV_Date_data = dt.read()
-                                            Date_count = RSV_Date_data.count(RSV_Date_input)
+                                            Date_count = RSV_Date_data.count(RSV_Date_input_final)
 
                                             #Counts to see if the date is found in the list 32 times. If true, then it means the date is full
                                             if Date_count != 32:
-                                                print("Reservation set on {0}\n".format(RSV_Date_input))
                                                 ADD_RSV_selection_loop = False
-
                                                 os.system('cls')
                                                 print("Reservation date succesfully added")
 
                                                 break
+                                            
                                             else:
                                                 print("Error: Selected date is full.\nThe selected date is full and has no more room for reservations.\nTry another date.\n")
                                                 #print(Date_count) #test code
@@ -207,33 +207,164 @@ while main_menu_loop:
 
                 
                 elif RSV_Selection == '2':
-                    
-                    RSV_Slot_input = "Slot 1"
-                    #Getting the session slot of the reservation
-                    # while RSV_Slot_loop:
-                    #     print("RESERVATION SLOT:")
-                    #     with open("reservations_21100649.txt", "r") as st:
-                    #         RSV_Slot_data = st.read()
-                    #         RSV_Slot_data_count = 
+                    if RSV_Date_input_final == '':
+                        os.system('cls')
+                        print("Error: Invalid order!\nComplete the details for Reservation Date.\nPlease select a different option\n")
+                        break
 
-                        # #Counts the reservation slots in the date.
-                        # with open("reservations_21100649.txt", 'r') as st:
-                        #     RSV_Slot_data = st.read()
-                        #     RSV_Slot_data_date_count = RSV_Slot_data.count(RSV_Date_input)
-                            
+                    else:
+                        RSV_Slot_loop = True
+                        while RSV_Slot_loop:
+
+                            Sl1 = 0
+                            Sl2 = 0
+                            Sl3 = 0
+                            Sl4 = 0
+
+                            Slot1_count = 0
+                            Slot2_count = 0
+                            Slot3_count = 0
+                            Slot4_count = 0
+                            date_count_2 = 0
+
+                            RSV_Slot1_status = Slot1_count
+                            RSV_Slot2_status = Slot2_count
+                            RSV_Slot3_status = Slot3_count
+                            RSV_Slot4_status = Slot4_count
+
+                            RSV_Slot_Selection_loop = True
+
+                            #Opens up text file for user to read the occurence of reservation date and its respective slot.
+                            with open('reservation_21100649.txt', 'r') as test:
+                                data = test.readlines()
+
+                                #Reads through all lines of the text file
+                                for i in range(len(data)):
+                                    data2 = data[i].strip().split('|')
+                                    
+                                    #Only concenrs the lines where the selected date occurs in the text file
+                                    if data2[0] == RSV_Date_input_final:
+                                        #The use of if elif statements to manually count the date for every occurence it makes in the array.
+                                        # Allows allows us to enable UI required details.
+                                        if data2[1] == 'Slot 1':
+                                            Slot1_count += 1
+
+                                            if Slot1_count == 8:
+                                                RSV_Slot1_status = "SESSION FULL"
+                                            
+                                            elif Slot1_count == 0:
+                                                RSV_Slot1_status = "EMPTY SESSION"
+
+                                            else:
+                                                RSV_Slot1_status = "SESSION AVAILABLE {0}/8".format(Slot1_count)
 
 
-                        # print("NOTICE:\nEach date supports a maximum of 8 reservations per slot.\nHere are the time slots for the reservation on {0}.\n[1] 12:00pm - 02:00pm (Status: {1}/8)\n[2] 02:00pm - 04:00pm (Status: {2}/8)\n[3] 06:00pm - 08:00pm (Status: {3}/8)\n[4] 08:00pm - 10:00pm (Status: {4}/8)".format(RSV_Date_input, RSV_date_slot1_count, RSV_date_slot2_count, RSV_date_slot3_count, RSV_date_slot4_count))
-                        # try:
-                        #     RSV_Slot_input = int(input("Please select the time slot for the reservation: "))
-                        # except:
-                        #     print("Error: Invalid input format!\nPlease enter the input for the time slot in integer form only.\nTry again")
-                        # else:
+                                        elif data2[1] == 'Slot 2':
+                                            Slot2_count += 1
+                                            
+                                            if Slot2_count == 8:
+                                                RSV_Slot2_status = "SESSION FULL"
+                                            
+                                            elif Slot3_count == 0:
+                                                RSV_Slot3_status = "EMPTY SESSION"
+                                            
+                                            else:
+                                                RSV_Slot2_status = "SESSION AVAILABLE {0}/8".format(Slot2_count)
+                                        
+                                        elif data2[1] == 'Slot 3':
+                                            Slot3_count += 1
+                                        
+                                            if Slot3_count == 8:
+                                                RSV_Slot3_status = "SESSION FULL"
+                                            
+                                            elif Slot3_count == 0:
+                                                RSV_Slot3_status = "EMPTY SESSION"
+                                            
+                                            else:
+                                                RSV_Slot3_status = "SESSION AVAILABLE {0}/8".format(Slot3_count)
 
-                        #         print("This slot on this date has reached the maximum capacity.\nPlease select a different slot")
-                        #     else:
-                        #         ADD_RSV_details.append(RSV_Slot_input)
-                        #         print("Reservation set for slot {0}".format(RSV_Slot_input))
+                                        elif data2[1] == 'Slot 4':
+                                            Slot4_count += 1
+                                            
+                                            if Slot4_count == 8:
+                                                RSV_Slot4_status = "SESSION FULL"
+                                            
+                                            elif Slot4_count == 0:
+                                                RSV_Slot4_status = "EMPTY SESSION"
+                                            
+                                            else:
+                                                RSV_Slot4_status = "SESSION AVAILABLE {0}/8".format(Slot4_count)
+
+                                test.close()
+
+                            # Test codes
+                            # print(Slot1_count)
+                            # print(Slot2_count)
+                            # print(Slot3_count)
+                            # print(Slot4_count)
+
+                            # print(RSV_Slot1_status)
+                            # print(RSV_Slot2_status)
+                            # print(RSV_Slot3_status)
+                            # print(RSV_Slot4_status)
+
+                            os.system('cls')
+                            print("RESERVATION SLOT\nNOTICE:\nEach session can accomodate a maximum of 8 reservations\nIf you entered here on accident, press 5 to return to the add reservation submenu\n{0}\n".format("------------------------------"))
+                            print("Details of the reservation slots on {0}\n[1] Session 1: 12:00pm - 02:00pm | Status: {1}\n[2] Session 2: 02:00pm - 04:00pm | Status: {2}\n[3] Session 3: 06:00pm - 08:00pm | Status: {3}\n[4] Session 4: 08:00pm - 10:00pm | Status: {4}\n[5] Return to add reservation submenu".format(RSV_Date_input_final, RSV_Slot1_status, RSV_Slot2_status, RSV_Slot3_status, RSV_Slot4_status))
+                            while RSV_Slot_Selection_loop:
+                                RSV_Slot_Selection = input("Please enter your selection here: ")
+                                
+                                if RSV_Slot_Selection == '1':
+                                    if RSV_Slot1_status != 'SESSION FULL':
+                                        RSV_Slot_input = "Slot 1"
+                                        RSV_Slot_Selection_loop = False
+                                        ADD_RSV_selection_loop = False
+                                        RSV_Slot_loop = False
+                                        os.system('cls')
+                                        print("Reservation Slot sucessfully added")
+                                        break
+                                    else:
+                                        print("Error: Selected slot is full!\nEach reservation session slot supports 8 reservations maximum\nPlease select a reservation that has less than 8 reservations assigned\nTry again")
+                                
+                                elif RSV_Slot_Selection == '2':
+                                    if RSV_Slot2_status != 'SESSION FULL':
+                                        RSV_Slot_input = "Slot 2"
+                                        RSV_Slot_Selection_loop = False
+                                        ADD_RSV_selection_loop = False
+                                        RSV_Slot_loop = False
+                                        os.system('cls')
+                                        print("Reservation Slot sucessfully added")
+                                        
+                                    else:
+                                        print("Error: Selected slot is full!\nEach reservation session slot supports 8 reservations maximum\nPlease select a reservation that has less than 8 reservations assigned\nTry again")
+
+                                elif RSV_Slot_Selection == '3':
+                                    if RSV_Slot3_status != 'SESSION FULL':
+                                        RSV_Slot_input = "Slot 3"
+                                        RSV_Slot_Selection_loop = False
+                                        ADD_RSV_selection_loop = False
+                                        RSV_Slot_loop = False
+                                        os.system('cls')
+                                        print("Reservation Slot sucessfully added")
+                                        break
+                                    else:
+                                        print("Error: Selected slot is full!\nEach reservation session slot supports 8 reservations maximum\nPlease select a reservation that has less than 8 reservations assigned\nTry again")
+
+                                elif RSV_Slot_Selection == '4':
+                                    if RSV_Slot2_status != 'SESSION FULL':
+                                        RSV_Slot_input = "Slot 4"
+                                        RSV_Slot_Selection_loop = False
+                                        ADD_RSV_selection_loop = False
+                                        RSV_Slot_loop = False
+                                        os.system('cls')
+                                        print("Reservation Slot sucessfully added")
+                                        break
+                                    else:
+                                        print("Error: Selected slot is full!\nEach reservation session slot supports 8 reservations maximum\nPlease select a reservation that has less than 8 reservations assigned\nTry again")
+                                else:
+                                    print("Error: Invalid selection!\nPlease use one of the given options (1-5) as your selection\nTry again")
+                                    RSV_Slot_Selection_loop = False
+                                    break
                 
                 elif RSV_Selection == '3':
                         
@@ -269,10 +400,12 @@ while main_menu_loop:
                         print("CUSTOMER EMAIL:")
                         print("NOTICE:\nEmail must be in correct format (E.g ExampleEmail@gmail.com)\ngmail, hotmail and yahoo domains are supported.\nThe escape code is 'ESCAPE'")
                         
-                        RSV_Email_input = input("Please enter the customer's email address: ")
+                        RSV_Email_input_initial = input("Please enter the customer's email address: ")
                         
-                        if RSV_Email_input != 'ESCAPE':
-                            if RSV_Email_input.endswith("@gmail.com") or RSV_Email_input.endswith("@yahoo.com") or RSV_Email_input.endswith("@hotmail.com"):
+                        if RSV_Email_input_initial != 'ESCAPE':
+
+                            RSV_Email_input_final = RSV_Email_input_initial
+                            if RSV_Email_input_final.endswith("@gmail.com") or RSV_Email_input_final.endswith("@yahoo.com") or RSV_Email_input_final.endswith("@hotmail.com"):
                                 ADD_RSV_selection_loop = False
                                 os.system('cls')
                                 print("Customer Email succesfully added")
@@ -294,12 +427,14 @@ while main_menu_loop:
                         print("CUSTOMER CONTACT NUMBER:")
                         print("NOTICE:\n1.Customer contact number MUST be 10 digits long.\n2.Must start with 01.\nThe escape code is '0'")
                         
-                        RSV_PhoneNum_input = input("Please enter the customer's contact number: ")
+                        RSV_PhoneNum_input_initial = input("Please enter the customer's contact number: ")
 
-                        if RSV_PhoneNum_input != '0':   
-                            if len(RSV_PhoneNum_input) == 10:
-                                if RSV_PhoneNum_input.isdigit():
-                                    if RSV_PhoneNum_input.startswith("01"):
+                        if RSV_PhoneNum_input_initial != '0':   
+
+                            RSV_PhoneNum_input_final = RSV_PhoneNum_input_initial
+                            if len(RSV_PhoneNum_input_final) == 10:
+                                if RSV_PhoneNum_input_final.isdigit():
+                                    if RSV_PhoneNum_input_final.startswith("01"):
                                         ADD_RSV_selection_loop = False
                                         os.system('cls')
                                         print("Customer Phone Number succesfully added")
@@ -328,18 +463,20 @@ while main_menu_loop:
                         print("NOTICE:\nThe reservation size cannot be more than 4.\nThe escape code is '0'")
                         
                         try:
-                            RSV_Size_input = int(input("Please enter the size of the reservation slot: "))
+                            RSV_Size_input_initial = int(input("Please enter the size of the reservation slot: "))
                         except: #If user enters non integer
                             print("Error: Invalid input format.\nThe system only accepts integer values for reservation size\nTry again.\n")
                         else: #Else, proceed.
 
-                            if RSV_Size_input != 0:
+                            if RSV_Size_input_initial != 0:
+
+                                RSV_Size_input_final = RSV_Size_input_initial
                                 #Checks if ResPax has at least 1 person or a maximum of 4 people, or anything in between.
-                                if RSV_Size_input < 1:
+                                if RSV_Size_input_final < 1:
                                     os.system('cls')
                                     print("Error: Invalid size input.\nReservation slots can never have 0 people.\nTry again\n")
 
-                                elif RSV_Size_input > 4:
+                                elif RSV_Size_input_final > 4:
                                     os.system('cls')
                                     print("Error: Invalid size input.\nReservation slots support a maximum of 4 people per slot.\nTry again\n")
 
@@ -390,12 +527,12 @@ while main_menu_loop:
                         if RSV_ADD_Reset_Selection == '1':
 
                             #Used to revert all progress into blank data.
-                            RSV_Date_input = ''
+                            RSV_Date_input_final = ''
                             RSV_Slot_input = ''
                             RSV_Name_input = ''
-                            RSV_Email_input = ''
-                            RSV_PhoneNum_input = ''
-                            RSV_Size_input = ''
+                            RSV_Email_input_final = ''
+                            RSV_PhoneNum_input_final = ''
+                            RSV_Size_input_final = ''
 
                             os.system('cls')
                             RSV_ADD_selection_loop = False
@@ -414,7 +551,7 @@ while main_menu_loop:
                             
                 elif RSV_Selection == '9' or RSV_Selection == '10':
                     
-                    if RSV_Date_input == '' or RSV_Slot_input == '' or FM2_RSV_Name_input == '' or RSV_Email_input == '' or RSV_PhoneNum_input == '' or RSV_Size_input == '':
+                    if RSV_Date_input_final == '' or RSV_Slot_input == '' or FM2_RSV_Name_input == '' or RSV_Email_input_final == '' or RSV_PhoneNum_input_final == '' or RSV_Size_input_final == '':
                         
                         os.system('cls')
                         ADD_RSV_selection_loop = False
@@ -422,6 +559,15 @@ while main_menu_loop:
                     
                     else: 
                         if RSV_Selection == '9': 
+
+                            #To convert all data back into emtpy text.
+                            RSV_Date_input_final = ''
+                            RSV_Slot_input = ''
+                            RSV_Name_input = ''
+                            RSV_Email_input_final = ''
+                            RSV_PhoneNum_input_final = ''
+                            RSV_Size_input_final = ''
+
                             ADD_Reservation()
                             os.system('cls')
                             print("Succesfully added the reservation details onto the reservation's text file.")
