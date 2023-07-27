@@ -134,6 +134,7 @@ while main_menu_loop:
         RSV_PhoneNum_input_final = ''
         RSV_Size_input_final = ''
         FM_RSV_DATE_input = ''
+        FM_RSV_Date_input_1 = ''
 
         RSV_Slot1_status = ''
         RSV_Slot2_status = ''
@@ -217,15 +218,18 @@ while main_menu_loop:
                         else:
                             try: #Tries to catch invalid input formats.
                                 #Formats user input for logic comparison
-                                FM_RSV_DATE_input = datetime.strptime(RSV_Date_input_initial, "%Y-%m-%d")
+                                FM_RSV_Date_input = datetime.strptime(RSV_Date_input_initial, "%Y-%m-%d").date()
+
+                                        
 
                             except ValueError:
                                 os.system('cls')
                                 print("Error: Invalid date format!\nPlease enter the date of the reservation in the format (YYYY-MM-DD)\nTry Again\n")
 
                             else:
+                                FM_RSV_Date_input_1 = datetime.strftime(FM_RSV_Date_input,"%Y-%m-%d")
                                 #If date input is not escape code, it will continue. Else, it will return to submenu.
-                                if FM_RSV_DATE_input != FM_today:
+                                if FM_RSV_Date_input_1 != FM_today:
                                     
                                     #Comparison. Forces user to choose a different date if true.
                                     if FM_RSV_DATE_input <= Date_minimum:
@@ -235,10 +239,7 @@ while main_menu_loop:
                                     #The date is 5 days or more ahead.
                                     else:
                                         #Formats input to presentable form
-                                        RSV_Date_input_final = RSV_Date_input_initial
-                                        FM2_RSV_Date_input = datetime.strptime(RSV_Date_input_final, "%Y-%m-%d").date()
-                                        FM_RSV_Date_input_final = datetime.strftime(FM2_RSV_Date_input,"%Y-%m-%d")
-                                        
+
                                         with open('reservation_21100649.txt', 'r') as dt:
 
                                             #Used to count how times does the inputted date occur.
@@ -286,6 +287,9 @@ while main_menu_loop:
 
                                                             elif RSV_Slot4_status == 8 and RSV_Slot_input == 'Slot 4':
                                                                 RSV_Slot_input = ''
+                                                
+                                                #Input to be presented
+                                                FM_RSV_Date_input_final = FM_RSV_Date_input_1 
                                                 break
                                             #The date was full. (Occurred 32 times)
                                             else:
