@@ -6,13 +6,10 @@ from datetime import datetime, timedelta
 def ADD_Reservation():
     #Opens the text file in append mode.
     with open('reservation_21100649.txt', 'a') as ADD:
-        
         #Prepares the reservation line.
         ADD_Reservation_str = ("{0}|{1}|{2}|{3}|{4}|{5}\n".format(FM_RSV_Date_input_final, RSV_Slot_input, FM2_RSV_Name_input, RSV_Email_input_final, RSV_PhoneNum_input_final, RSV_Size_input_final))
-
         #Appends the reservation line onto the text file
         ADD.write(ADD_Reservation_str)
-
         #Close file
         ADD.close()
 
@@ -21,11 +18,9 @@ def update_reservation(reservation_list, index, change) :
     rsv_info = data[reservation_list].strip().split('|')
     rsv_info[index] = change
     data[reservation_list] = '|'.join(rsv_info) + '\n'  # Add new line character
-
     with open('reservation_21100649.txt', 'w') as f :
         for line in data :
             f.write(line)
-
 
 # Function to count reservations for each date and slot
 def count_reservations() :
@@ -38,7 +33,6 @@ def count_reservations() :
             new_date_slot = (date, slot)
             count_date_slot[new_date_slot] = count_date_slot.get(new_date_slot, 0) + 1
     return count_date_slot
-
 
 # This function generates a meal recommendation
 def meal_recommendation_generator(menu_contents, min, max, previous_recommendation):
@@ -53,7 +47,6 @@ def meal_recommendation_generator(menu_contents, min, max, previous_recommendati
         recommendation = random.choice(menu_recommendation)
     previous_recommendation = recommendation
     return recommendation, previous_recommendation
-
 
 # This function will determine if the user continues with their process or return to the main menu
 def menu_exit(question):
@@ -71,7 +64,6 @@ def menu_exit(question):
         loop = False
         return loop
 
-
 #-----------------------------------------------------------------------------#
 # This variable enables the main menu 
 main_menu_loop = True
@@ -81,7 +73,6 @@ try:
     with open("reservation_21100649.txt", "r") as reservation_list:
         reservation_list_contents = reservation_list.readlines()
         reservation_list_contents.sort()
-        display_list = tuple(reservation_list_contents)
 except FileNotFoundError:
     main_menu_loop = False
     print("Reservation file not Found! Please contact management for assistance!")
@@ -90,7 +81,7 @@ except FileNotFoundError:
 try:
     with open("menuItems_21100649.txt", "r") as menu_list:
         menu_contents = menu_list.readlines()
-except:
+except FileNotFoundError:
     main_menu_loop = False
     print("Menu file not found! Please contact management for assistance!")
 
@@ -120,11 +111,8 @@ while main_menu_loop:
             print("Please enter a valid number (1-6) \n")
             print("--------------------------------------------------------------------------------\n")
     
-    #Enables ADD Reservation Submenu
     if main_menu_input == 1:
-        #Code for adding reservations.
         os.system('cls')
-            
         #Initial assigning of input variables.
         
         FM_RSV_Date_input_final = ''
@@ -134,7 +122,6 @@ while main_menu_loop:
         RSV_PhoneNum_input_final = ''
         RSV_Size_input_final = ''
         FM_RSV_DATE_input = ''
-        FM_RSV_Date_input_1 = ''
 
         RSV_Slot1_status = ''
         RSV_Slot2_status = ''
@@ -151,25 +138,20 @@ while main_menu_loop:
         Slot3_count = 0
         Slot4_count = 0
 
-
         ADD_RSV_loop = True #The parent loop
         while ADD_RSV_loop:
 
-            #Its for RSV_Name to remove symbols.
+            # It's for RSV_Name to remove symbols.
             forbidden_symbols = ['`','~','!','@','#','#','%','^','&','*','(',')','-','_','=','+',',','<','.','>','/','?',';',':','"','[',']','{','}','|']
 
-            '''
-            IMPORTANT:
-            RSV stands for reservation
-            FM stands for formatted
-            '''
+            # IMPORTANT:
+            # RSV stands for reservation
+            # FM stands for formatted
 
             #Loop for the selection input section
             ADD_RSV_selection_loop = True
             
-
             #Submenu UI
-            
             #Name of Submenu
             print("ADD RESERVATION SUBMENU\n") 
 
@@ -218,28 +200,30 @@ while main_menu_loop:
                         else:
                             try: #Tries to catch invalid input formats.
                                 #Formats user input for logic comparison
-                                FM_RSV_Date_input = datetime.strptime(RSV_Date_input_initial, "%Y-%m-%d").date()
-
-                                        
+                                FM_RSV_Date_input = datetime.strptime(RSV_Date_input_initial, "%Y-%m-%d")
+                                FM_RSV_Date_input_1 = datetime.strptime(RSV_Date_input_initial, "%Y-%m-%d").date()
+                                FM_RSV_Date_input_2 = datetime.strftime(FM_RSV_Date_input_1,"%Y-%m-%d")
 
                             except ValueError:
                                 os.system('cls')
                                 print("Error: Invalid date format!\nPlease enter the date of the reservation in the format (YYYY-MM-DD)\nTry Again\n")
 
                             else:
-                                FM_RSV_Date_input_1 = datetime.strftime(FM_RSV_Date_input,"%Y-%m-%d")
                                 #If date input is not escape code, it will continue. Else, it will return to submenu.
-                                if FM_RSV_Date_input_1 != FM_today:
+                                if FM_RSV_Date_input_2 != FM_today:
                                     
                                     #Comparison. Forces user to choose a different date if true.
-                                    if FM_RSV_DATE_input <= Date_minimum:
+                                    if FM_RSV_Date_input < Date_minimum:
                                         os.system('cls')
                                         print("Error: Invalid date selected!\nYou can only apply for a reservation at least 5 days in advance from today\nPlease try again\n")
                                     
                                     #The date is 5 days or more ahead.
                                     else:
                                         #Formats input to presentable form
-
+                                        RSV_Date_input_final = RSV_Date_input_initial
+                                        FM2_RSV_Date_input = datetime.strptime(RSV_Date_input_final, "%Y-%m-%d").date()
+                                        FM_RSV_Date_input_final = datetime.strftime(FM2_RSV_Date_input,"%Y-%m-%d")
+                                        
                                         with open('reservation_21100649.txt', 'r') as dt:
 
                                             #Used to count how times does the inputted date occur.
@@ -287,9 +271,6 @@ while main_menu_loop:
 
                                                             elif RSV_Slot4_status == 8 and RSV_Slot_input == 'Slot 4':
                                                                 RSV_Slot_input = ''
-                                                
-                                                #Input to be presented
-                                                FM_RSV_Date_input_final = FM_RSV_Date_input_1 
                                                 break
                                             #The date was full. (Occurred 32 times)
                                             else:
@@ -300,7 +281,6 @@ while main_menu_loop:
                                     ADD_RSV_selection_loop = False
                                     os.system('cls')
                                     break
-
 
                 #Reservation slot has been chosen.
                 elif RSV_Selection == '2':
@@ -313,7 +293,6 @@ while main_menu_loop:
                     
                     #The date is entered.
                     else:
-
                         #The loop process. Used defined loop to make the loop breakable.
                         RSV_Slot_loop = True
                         while RSV_Slot_loop:
@@ -405,7 +384,6 @@ while main_menu_loop:
                                     RSV_Slot3_status = "EMPTY SLOT"
                                 break
 
-                            
                             #UI presented to user. Displays date of reservation, status of the slots and how many are still available.
                             os.system('cls')
                             print("SELECTED RESERVATION SLOT\nNOTICE!\nEach session can accomodate a maximum of 8 reservations\nIf you entered here on accident, press 5 to return to the add reservation submenu\n")
@@ -854,11 +832,45 @@ while main_menu_loop:
                     print("Error: Invalid selection!\nPlease use the given options (1-10) as your selection.\nTry Again.\n")    
                     break
 
-        #function
+        
     elif main_menu_input == 2:
-        pass
-        #function
-
+        reservations = []
+        
+        data = ''
+    
+        with open('reservation_21100649.txt', 'r') as f :
+                data = f.readlines()
+    
+        for i in range(len(data)) :
+            reservations.append(data[i])
+    
+        if not reservations:
+            print("No reservations to delete. Please add some reservations")
+            break
+        else:
+            while True:
+                try:
+                    print("Reservations:")
+                    reservations.sort()
+                    for i, reservation in enumerate(reservations, 1):
+                        data = reservation.split('|')
+                        print("{} : Date - [{}] || Session - [{}] || Name - [{}]".format(i, data[0], data[1], data[2]))
+                    cancel_choice = int(input("\nEnter the number of the reservation you want to cancel (or 0 to go back): "))
+                    if cancel_choice == 0:
+                        break
+                    elif cancel_choice < 1 or cancel_choice > len(reservations):
+                        print("Invalid input. Please enter a valid reservation number.")
+                    else:
+                        canceled_reservation = reservations.pop(cancel_choice - 1)
+                        data = canceled_reservation.split('|')
+                        print("Reservation for {} on {} at {} has been canceled.\n\n".format(data[2], data[0], data[1]))
+                    
+                        with open('reservation_21100649.txt', 'w') as f :
+                            for line in reservations :
+                                f.write(line)
+                            
+                except ValueError:
+                    print("Invalid input. Please enter a valid reservation number.")
 
     elif main_menu_input == 3:
         os.system('cls')
@@ -921,7 +933,7 @@ while main_menu_loop:
                                     continue
                         # Check if the chosen slot on the chosen date has reached the maximum capacity (8 reservations)
                                 date = datetime.strftime(chosen_date, "%Y-%m-%d")
-                    # Check if the chosen slot on the chosen date has reached the maximum capacity (8 reservations)
+                        # Check if the chosen slot on the chosen date has reached the maximum capacity (8 reservations)
                                 date_slot = (date, reservation_info[1])
                                 date_slot_count = count_reservations()
                                 if date_slot in date_slot_count and date_slot_count[date_slot] >= 8 :
@@ -1015,30 +1027,58 @@ while main_menu_loop:
                 break
         
 
-
     elif main_menu_input == 4:
-        print("\n--------------------------------------------------------------------------------\n")
-        display_guide = "No. | {0:^10} | {1:^6} | {2:^15} | {3:^31} | {4:^10} | {5:^1} \n".format("Date","Slot","Name","Email","Phone Num","PAX")
-        print(display_guide)
-
-        list_count = 1
-        for i in range(len(display_list)):
-            if i % 10 == 0 and i != 0:
-                display_continue = input("Enter any word, number or symbol to return to continue: ")
+        loop = True
+        while loop:
+            continue_question = "Do you want to proceed? Please choose the corresponding number (1-2) of your option \n[1] Continue \n[2] Return to Main Menu \n>>> "
+            loop = menu_exit(continue_question)
+            
+            if loop == False:
                 os.system('cls')
+                break
+            
+            if loop == True:
+            # This block asks the user to enter the date of the reservations that they want to see
+                display_list = []
+                while True:
+                    try:
+                        date = input("\nEnter the date (yyyy-mm-dd) of the reservations you want to see (yyyy-mm-dd)\n>>> ")
+                        chosen_date = datetime.strptime(date, "%Y-%m-%d").date()
+                        date = datetime.strftime(chosen_date, "%Y-%m-%d")
+                        date_exists = False
+                        for i in range(len(reservation_list_contents)):
+                            if date in reservation_list_contents[i]:
+                                display_list.append(reservation_list_contents[i])
+                                date_exists = True
+                        if date_exists == True:
+                            break
+                        if date_exists == False:
+                            print("\nThere is no reservation on that date")
+                    except ValueError:
+                        print("\nPlease enter a valid date \n")
+
+                # This block displays the list of reservations
+                print("\n--------------------------------------------------------------------------------\n")
+                display_guide = "No. | {0:^10} | {1:^6} | {2:^15} | {3:^31} | {4:^10} | {5:^1} \n".format("Date","Slot","Name","Email","Phone Num","PAX")
                 print(display_guide)
-            display_list_contents = display_list[i]
-            display_list_contents = display_list_contents.split("|")
-            display_output = "{0:^3} | {1:^1} | {2:^1} | {3:^15} | {4:^31} | {5:^10} |  {6:^1}".format(list_count,display_list_contents[0], display_list_contents[1], display_list_contents[2], display_list_contents[3], display_list_contents[4], display_list_contents[5])
-            print(display_output)
-            list_count += 1
 
-        # This input will allow the user to view the display list before returning to the main menu
-        display_exit = input("Enter any word, number or symbol to return to the main menu: ")
-        os.system('cls')
-        print("\n--------------------------------------------------------------------------------")
+                list_count = 1
+                for i in range(len(display_list)):
+                    if i % 10 == 0 and i != 0:
+                        display_continue = input("Enter any word, number or symbol to return to continue: ")
+                        os.system('cls')
+                        print(display_guide)
+                    display_list_contents = display_list[i]
+                    display_list_contents = display_list_contents.split("|")
+                    display_output = "{0:^3} | {1:^1} | {2:^1} | {3:^15} | {4:^31} | {5:^10} |  {6:^1}".format(list_count,display_list_contents[0], display_list_contents[1], display_list_contents[2], display_list_contents[3], display_list_contents[4], display_list_contents[5])
+                    print(display_output)
+                    list_count += 1
 
-
+            # This input will allow the user to view the display list before returning to the main menu
+            display_exit = input("Enter any word, number or symbol to return to the main menu: ")
+            os.system('cls')
+            print("\n--------------------------------------------------------------------------------")
+            break
 
     elif main_menu_input == 5:
         # This loop allows the user to select the type of recommendation they want
@@ -1092,10 +1132,7 @@ while main_menu_loop:
         os.system('cls')
         print("\n--------------------------------------------------------------------------------")
 
-
-
     elif main_menu_input == 6:
         main_menu_loop = False
-
-print("--------------------------------------------------------------------------------")
-print("Thank you for using the program")
+        print("--------------------------------------------------------------------------------")
+        print("Thank you for using the program")
