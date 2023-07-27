@@ -77,7 +77,7 @@ except FileNotFoundError:
 try:
     with open("menuItems_21100649.txt", "r") as menu_list:
         menu_contents = menu_list.readlines()
-except:
+except FileNotFoundError:
     main_menu_loop = False
     print("Menu file not found! Please contact management for assistance!")
 
@@ -110,6 +110,8 @@ while main_menu_loop:
     if main_menu_input == 1:
         pass
         #function
+
+        
     elif main_menu_input == 2:
         reservations = []
         
@@ -414,6 +416,5 @@ while main_menu_loop:
 
     elif main_menu_input == 6:
         main_menu_loop = False
-
-print("--------------------------------------------------------------------------------")
-print("Thank you for using the program")
+        print("--------------------------------------------------------------------------------")
+        print("Thank you for using the program")
