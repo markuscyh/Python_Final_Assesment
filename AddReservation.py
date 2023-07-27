@@ -133,6 +133,7 @@ while main_menu_loop:
         RSV_Email_input_final = ''
         RSV_PhoneNum_input_final = ''
         RSV_Size_input_final = ''
+        FM_RSV_DATE_input = ''
 
         RSV_Slot1_status = ''
         RSV_Slot2_status = ''
@@ -183,7 +184,7 @@ while main_menu_loop:
                 #User selects one of the options
                 RSV_Selection = input("Please enter your selection from 1-10 here: ")
                 
-                #Reservation date has been chosen
+                #Reservation date has been chosen to be added.
                 if RSV_Selection == '1':
                     
                     os.system('cls')
@@ -200,96 +201,101 @@ while main_menu_loop:
                         Date_minimum = today + timedelta(days=5)
                         
                         print("SELECTED RESERVATION DATE") #Subsection name
-                        print("NOTICE!\nThe date of the reservation must be 5 days in advacned from today {0}\nThe escape code is today's date.\n") #otice
+                        print("NOTICE!\nThe date of the reservation must be 5 days in advacned from today {0}\nThe escape code is today's date.\n".format(FM_today)) #otice
                         #Used to catch Value Error exception
                         
                         try:
                             #Subsection input
-                            RSV_Date_input_initial = input("Please enter the date of the reservation in the format (YYYY-mm-dd): ".format(FM_today))
+                            RSV_Date_input_initial = input("Please enter the date of the reservation in the format (YYYY-mm-dd): ")
 
                         #Catchses exception, allows program to keep functioning
                         except ValueError:
                             os.system('cls')
-                            print("Error: Invalid date format!\nPlease enter the date of the reservation in (YYYY-mm-dd) format.\nPlease try again\n")
+                            print("Error: Invalid date format!\nPlease enter the date of the reservation in (YYYY-mm-dd) format.\nTry Again\n")
                             
                         #No exceptions, then proceeding to add.
                         else:
+                            try: #Tries to catch invalid input formats.
+                                #Formats user input for logic comparison
+                                FM_RSV_DATE_input = datetime.strptime(RSV_Date_input_initial, "%Y-%m-%d")
 
-                            #Formats user input for logic comparison
-                            FM_RSV_DATE_input = datetime.strptime(RSV_Date_input_initial, "%Y-%m-%d")
-
-                            #If date input is not escape code, it will continue. Else, it will return to submenu.
-                            if RSV_Date_input_initial != FM_today:
-                                
-                                #Comparison. Forces user to choose a different date if true.
-                                if FM_RSV_DATE_input <= Date_minimum:
-                                    os.system('cls')
-                                    print("Error: Invalid date selected!\nYou can only apply for a reservation at least 5 days in advance from today\nPlease try again\n")
-                                
-                                #The date is 5 days or more ahead.
-                                else:
-                                    #Formats input to presentable form
-                                    RSV_Date_input_final = RSV_Date_input_initial
-                                    FM2_RSV_Date_input = datetime.strptime(RSV_Date_input_final, "%Y-%m-%d").date()
-                                    FM_RSV_Date_input_final = datetime.strftime(FM2_RSV_Date_input,"%Y-%m-%d")
-                                    
-                                    with open('reservation_21100649.txt', 'r') as dt:
-
-                                        #Used to count how times does the inputted date occur.
-                                        RSV_Date_data = dt.read()
-                                        Date_count = RSV_Date_data.count(FM_RSV_Date_input_final)
-
-                                        #Logic operation. If the inputted date appears 32 times, then the date is invalid as it is full of reservations.
-                                        if Date_count != 32:
-                                            ADD_RSV_selection_loop = False
-                                            os.system('cls')
-                                            print("Reservation date succesfully added")
-
-                                            #In the case that the user resellects the date to edit it. This will automatically redefine the slot back to blank space, IF the selected slot on that date is full.
-                                            if RSV_Slot_input == 'Slot 1' or RSV_Slot_input == 'Slot 2' or RSV_Slot_input == 'Slot 3' or RSV_Slot_input == 'Slot 4':
-                                                    
-                                                    with open('reservation_21100649.txt', 'r') as test:
-                                                        slot_data = test.readlines()
-                                                        for i in range(len(slot_data)):
-                                                            slot_data2 = slot_data[i].strip().split('|')
-                                                        
-                                                            #Only concenrs the lines where the selected date occurs in the text file
-                                                            if slot_data2[0] == FM_RSV_Date_input_final:
-
-                                                                #If specified slot appears, add 1 to the count.
-                                                                if slot_data2[1] == 'Slot 1':
-                                                                    Slot1_count += 1
-
-                                                                elif slot_data2[1] == 'Slot 2':
-                                                                    Slot2_count += 1
-                                                                    
-                                                                elif slot_data2[1] == 'Slot 3':
-                                                                    Slot3_count += 1
-
-                                                                elif slot_data2[1] == 'Slot 4':
-                                                                    Slot4_count += 1
-
-                                                        if RSV_Slot1_status == 8 and RSV_Slot_input == 'Slot 1':
-                                                            RSV_Slot_input = ''
-
-                                                        elif RSV_Slot2_status == 8 and RSV_Slot_input == 'Slot 2':
-                                                            RSV_Slot_input = ''
-
-                                                        elif RSV_Slot3_status == 8 and RSV_Slot_input == 'Slot 3':
-                                                            RSV_Slot_input = ''
-
-                                                        elif RSV_Slot4_status == 8 and RSV_Slot_input == 'Slot 4':
-                                                            RSV_Slot_input = ''
-                                            break
-                                        #The date was full. (Occurred 32 times)
-                                        else:
-                                            print("Error: Selected date is full.\nThe selected date is full and has no more room for reservations.\nTry another date.\n")
-
-                            #Returning to submenu succesfully.
-                            else:
-                                ADD_RSV_selection_loop = False
+                            except ValueError:
                                 os.system('cls')
-                                break
+                                print("Error: Invalid date format!\nPlease enter the date of the reservation in the format (YYYY-MM-DD)\nTry Again\n")
+
+                            else:
+                                #If date input is not escape code, it will continue. Else, it will return to submenu.
+                                if FM_RSV_DATE_input != FM_today:
+                                    
+                                    #Comparison. Forces user to choose a different date if true.
+                                    if FM_RSV_DATE_input <= Date_minimum:
+                                        os.system('cls')
+                                        print("Error: Invalid date selected!\nYou can only apply for a reservation at least 5 days in advance from today\nPlease try again\n")
+                                    
+                                    #The date is 5 days or more ahead.
+                                    else:
+                                        #Formats input to presentable form
+                                        RSV_Date_input_final = RSV_Date_input_initial
+                                        FM2_RSV_Date_input = datetime.strptime(RSV_Date_input_final, "%Y-%m-%d").date()
+                                        FM_RSV_Date_input_final = datetime.strftime(FM2_RSV_Date_input,"%Y-%m-%d")
+                                        
+                                        with open('reservation_21100649.txt', 'r') as dt:
+
+                                            #Used to count how times does the inputted date occur.
+                                            RSV_Date_data = dt.read()
+                                            Date_count = RSV_Date_data.count(FM_RSV_Date_input_final)
+
+                                            #Logic operation. If the inputted date appears 32 times, then the date is invalid as it is full of reservations.
+                                            if Date_count != 32:
+                                                ADD_RSV_selection_loop = False
+                                                os.system('cls')
+                                                print("Reservation date succesfully added")
+
+                                                #In the case that the user resellects the date to edit it. This will automatically redefine the slot back to blank space, IF the selected slot on that date is full.
+                                                if RSV_Slot_input == 'Slot 1' or RSV_Slot_input == 'Slot 2' or RSV_Slot_input == 'Slot 3' or RSV_Slot_input == 'Slot 4':
+                                                        
+                                                        with open('reservation_21100649.txt', 'r') as Slot:
+                                                            slot_data = Slot.readlines()
+                                                            for i in range(len(slot_data)):
+                                                                slot_data2 = slot_data[i].strip().split('|')
+                                                            
+                                                                #Only concenrs the lines where the selected date occurs in the text file
+                                                                if slot_data2[0] == FM_RSV_Date_input_final:
+
+                                                                    #If specified slot appears, add 1 to the count.
+                                                                    if slot_data2[1] == 'Slot 1':
+                                                                        Slot1_count += 1
+
+                                                                    elif slot_data2[1] == 'Slot 2':
+                                                                        Slot2_count += 1
+                                                                        
+                                                                    elif slot_data2[1] == 'Slot 3':
+                                                                        Slot3_count += 1
+
+                                                                    elif slot_data2[1] == 'Slot 4':
+                                                                        Slot4_count += 1
+
+                                                            if RSV_Slot1_status == 8 and RSV_Slot_input == 'Slot 1':
+                                                                RSV_Slot_input = ''
+
+                                                            elif RSV_Slot2_status == 8 and RSV_Slot_input == 'Slot 2':
+                                                                RSV_Slot_input = ''
+
+                                                            elif RSV_Slot3_status == 8 and RSV_Slot_input == 'Slot 3':
+                                                                RSV_Slot_input = ''
+
+                                                            elif RSV_Slot4_status == 8 and RSV_Slot_input == 'Slot 4':
+                                                                RSV_Slot_input = ''
+                                                break
+                                            #The date was full. (Occurred 32 times)
+                                            else:
+                                                print("Error: Selected date is full.\nThe selected date is full and has no more room for reservations.\nTry another date.\n")
+
+                                #Returning to submenu succesfully.
+                                else:
+                                    ADD_RSV_selection_loop = False
+                                    os.system('cls')
+                                    break
 
 
                 #Reservation slot has been chosen.
@@ -307,33 +313,13 @@ while main_menu_loop:
                         #The loop process. Used defined loop to make the loop breakable.
                         RSV_Slot_loop = True
                         while RSV_Slot_loop:
-                        
-                        #All necessary variables for calculation and logic operation
-
-                            #Slot counts, how many times the slot appears in the text file, under the specified date.
-                            Slot1_count = 0
-                            Slot2_count = 0
-                            Slot3_count = 0
-                            Slot4_count = 0
-
-                            #How many slots of each session are still available for this date.
-                            Slot1_available = 0
-                            Slot2_available = 0
-                            Slot3_available = 0
-                            Slot4_available = 0
-
-                            #Prints out the status of each slot.
-                            RSV_Slot1_status = ""
-                            RSV_Slot2_status = ""
-                            RSV_Slot3_status = ""
-                            RSV_Slot4_status = ""
 
                             #Another defined loop for easier break. This section provides user with another UI.
                             RSV_Slot_Selection_loop = True
 
                             #Opens up text file for user to read the occurence of reservation date and its respective slot.
-                            with open('reservation_21100649.txt', 'r') as test:
-                                slot_data = test.readlines()
+                            with open('reservation_21100649.txt', 'r') as Slot:
+                                slot_data = Slot.readlines()
 
                                 #Reads through all lines of the text file
                                 #Converts each line into an array of information. slot_data2[0] is the date, and slot_data2[1] is the slot.
@@ -363,7 +349,7 @@ while main_menu_loop:
                                         RSV_Slot3_status = "EMPTY SLOT"
                                         RSV_Slot4_status = "EMPTY SLOT"
 
-                                test.close() #Closes the textfile.
+                                Slot.close() #Closes the textfile.
                             
                             #Used to redefine session slot statusses.
                             while True: #For Slot 1
