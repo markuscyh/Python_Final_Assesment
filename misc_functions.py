@@ -41,35 +41,3 @@ def count_reservations() :
 # Function to check if a string contains only letters
 def contains_only_letters(input_str) :
     return all(char.isalpha() for char in input_str)
-
-
-# This function generates a meal recommendation
-def meal_recommendation_generator(menu_contents, min, max, previous_recommendation):
-    # This for loop helps ensure that recommendations of the same type are selected
-    menu_recommendation = []
-    for i in range(len(menu_contents)):
-        if i >= min and i <= max:
-            menu_recommendation.append(menu_contents[i])
-    recommendation = random.choice(menu_recommendation)
-    # This ensures that the same recommendation won't be selected twice in a row
-    while recommendation == previous_recommendation:
-        recommendation = random.choice(menu_recommendation)
-    previous_recommendation = recommendation
-    return recommendation, previous_recommendation
-
-
-# This function will determine if the user continues with their process or return to the main menu
-def menu_exit(question):
-    loop = True
-    while loop:
-        answer = input(f"{question}")
-        if answer in "12":
-            loop = False
-        else:
-            print("Please enter the number (1-2) that corresponds with your selection.")
-    if answer == "1":
-        loop = True
-        return loop
-    elif answer == "2":
-        loop = False
-        return loop
