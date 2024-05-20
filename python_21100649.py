@@ -2,6 +2,47 @@ import random
 import os
 from datetime import datetime, timedelta
 from misc_functions import *
+from GenerateMealRecommendation import *
+
+# This is the function to add the reservation onto the text file.
+def ADD_Reservation():
+    #Opens the text file in append mode.
+    with open('reservation_21100649.txt', 'a') as ADD:
+        #Prepares the reservation line.
+        ADD_Reservation_str = ("{0}|{1}|{2}|{3}|{4}|{5}\n".format(FM_RSV_Date_input_final, RSV_Slot_input, FM2_RSV_Name_input, RSV_Email_input_final, RSV_PhoneNum_input_final, RSV_Size_input_final))
+        #Appends the reservation line onto the text file
+        ADD.write(ADD_Reservation_str)
+        #Close file
+        ADD.close()
+
+
+# Function to update the reservation
+def update_reservation(reservation_list, index, change) :
+    rsv_info = data[reservation_list].strip().split('|')
+    rsv_info[index] = change
+    data[reservation_list] = '|'.join(rsv_info) + '\n'  # Add new line character
+    with open('reservation_21100649.txt', 'w') as f :
+        for line in data :
+            f.write(line)
+
+
+# Function to count reservations for each date and slot
+def count_reservations() :
+    count_date_slot = {}
+    for reservation in data :
+        rsv_data = reservation.strip().split('|')
+        if len(rsv_data) >= 2 :
+            date = rsv_data[0]
+            slot = rsv_data[1]
+            new_date_slot = (date, slot)
+            count_date_slot[new_date_slot] = count_date_slot.get(new_date_slot, 0) + 1
+    return count_date_slot
+
+
+# Function to check if a string contains only letters
+def contains_only_letters(input_str) :
+    return all(char.isalpha() for char in input_str)
+
 
 #-----------------------------------------------------------------------------#
 # This variable enables the main menu 
@@ -1024,45 +1065,11 @@ while main_menu_loop:
         # This loop allows the user to select the type of recommendation they want
         loop = True
         while loop:
-            while True:
-                print("Select the type of recommendation you would like from the numbers 1-5.")
-                print("[1] Seafood")
-                print("[2] Pork")
-                print("[3] Chicken")
-                print("[4] Beef")
-                print("[5] Sides")
-                user_recommendation = input(">>> ")
-                if user_recommendation not in "12345":
-                    print("\nPlease enter a number from 1-5 that corresponds with your selection.")
-                else: 
-                    break
-
-            # These if statements help pick the type of reservations from the reservation list
-            if user_recommendation == "1":
-                min_recommendation, max_recommendation = 0, 7
-
-            elif user_recommendation == "2":
-                min_recommendation, max_recommendation = 8, 10
-
-            elif user_recommendation == "3":
-                min_recommendation, max_recommendation = 11, 13
-
-            elif user_recommendation == "4":
-                min_recommendation, max_recommendation = 14, 18
-
-            elif user_recommendation == "5":
-                min_recommendation, max_recommendation = 19, 21
+            min_recommendation, max_recommendation = select_recommendation()
 
             # The loop will ask the user to ask for a new recommendation or exit
             os.system('cls')
-            recommendation_loop = True
-            previous_recommendation = ""
-            while recommendation_loop:
-                print("\n--------------------------------------------------------------------------------\n")
-                recommendation, previous_recommendation = meal_recommendation_generator(menu_contents, min_recommendation, max_recommendation, previous_recommendation)
-                print(f"We recommend {recommendation}")
-                recommendation_loop_question = "Would you like a new recommendation? Enter a number (1-2) to select your option \n[1] Another recommendation \n[2] Exit \n>>> "
-                recommendation_loop = menu_exit(recommendation_loop_question)
+            recommendation_loop(menu_contents, min_recommendation, max_recommendation)
             
             # This will ask the question of asking for a new recommendation type or to return to the main menu
             print("\n--------------------------------------------------------------------------------\n")
